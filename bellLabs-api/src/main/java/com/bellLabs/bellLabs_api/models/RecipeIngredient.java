@@ -1,6 +1,14 @@
 package com.bellLabs.bellLabs_api.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
+@Entity
 public class RecipeIngredient {
+
+    @Id
+    @GeneratedValue
 
     private int recipeIngredientId;
     private String name;

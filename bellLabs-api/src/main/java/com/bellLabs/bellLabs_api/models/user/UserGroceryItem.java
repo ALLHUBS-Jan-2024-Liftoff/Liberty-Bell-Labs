@@ -1,6 +1,14 @@
 package com.bellLabs.bellLabs_api.models.user;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
+@Entity
 public class UserGroceryItem {
+
+    @Id
+    @GeneratedValue
 
     private int userGroceryItemId;
     private int userId;
