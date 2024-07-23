@@ -2,9 +2,11 @@ package com.bellLabs.bellLabs_api.models;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 
 import java.util.Objects;
 
+@MappedSuperclass
 public class AbstractEntity {
     @Id
     @GeneratedValue
