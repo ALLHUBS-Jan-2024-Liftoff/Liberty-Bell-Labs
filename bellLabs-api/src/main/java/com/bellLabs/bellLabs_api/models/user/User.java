@@ -1,50 +1,33 @@
 package com.bellLabs.bellLabs_api.models.user;
 
+import com.bellLabs.bellLabs_api.models.AbstractEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
-public class User {
-    @Id
-    @GeneratedValue
-    private int userId;
+public class User extends AbstractEntity {
+
     private String username;
-    private String name;
-    private String email;
 
-    //Getters and Setters
+    private String pwHash;
+
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 
-    public int getUserId() {
-        return userId;
-    }
+    public User() {}
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public User(String username, String password) {
+        this.username = username;
+        this.pwHash = encoder.encode(password);
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public boolean isMatchingPassword(String password) {
+        return encoder.matches(password, pwHash);
     }
 }
