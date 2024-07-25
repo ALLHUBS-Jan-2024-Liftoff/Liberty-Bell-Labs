@@ -41,13 +41,14 @@ function Dashboard() {
   };
 
   return (
-    <div className="app-container">
+    <div className="d-flex align-items-start">
       {error && <div className="error">{error}</div>}
-      <ItemList items={items} onRemoveItems={handleRemoveItems} />
+      <div className="flex-grow-1">
+        <ItemList items={items} onRemoveItems={handleRemoveItems} />
+      </div>
+      {isFormVisible && <div className="ms-3"><ItemForm onAddItem={handleAddItem} /></div>}
       <button onClick={toggleFormVisibility}>Toggle Add Item</button>
-      {isFormVisible && <ItemForm onAddItem={handleAddItem} />}
     </div>
   );
 }
-
 export default Dashboard;
