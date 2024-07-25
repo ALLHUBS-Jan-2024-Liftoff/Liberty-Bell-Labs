@@ -16,6 +16,19 @@ export default function NavBar() {
         <a className="nav-link" href="#">Pricing</a>
         {/* <a className="nav-link disabled" aria-disabled="true">Disabled</a> */}
       </div>
+        {/* right side nav bar sign up and login */}
+
+        <ul class="nav navbar-nav ms-auto">
+        <li className="nav-item">
+          <a className="nav-link ms-3" href="#"><span className="glyphicon glyphicon-user"></span>Sign up</a>
+        </li>
+
+        <li className="nav-item">
+          <a className="nav-link ms-3" href="#"><span className="glyphicon glyphicon-user"></span>Login</a>
+        </li>
+      {/* <li><a href="/signup"><span class="glyphicon glyphicon-user"></span> Sign Up |  </a></li>
+      <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>  Login</a></li> */}
+    </ul>
     </div>
   </div>
 </nav>
