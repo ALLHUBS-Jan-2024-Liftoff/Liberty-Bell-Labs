@@ -26,8 +26,7 @@ export default function NavBar() {
         <li className="nav-item">
           <a className="nav-link ms-3" href="#"><span className="glyphicon glyphicon-user"></span>Login</a>
         </li>
-      {/* <li><a href="/signup"><span class="glyphicon glyphicon-user"></span> Sign Up |  </a></li>
-      <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>  Login</a></li> */}
+      
     </ul>
     </div>
   </div>
