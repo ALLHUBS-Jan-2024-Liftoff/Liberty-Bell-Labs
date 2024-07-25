@@ -1,17 +1,24 @@
 import './App.css'
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import NavBar from './layout/NavBar';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import NavBar from './components/NavBar';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   
-
   return (
-    <div className="App">
-
-      <NavBar/>
-      
-    </div>
+    <Router>
+      <div className="App">
+        <NavBar/>
+        <Routes>
+          <Route 
+            path="/dashboard" 
+            element={<Dashboard/>}
+          />
+        </Routes>
+      </div>
+    </Router>
   )
 }
 
-export default App
+export default App;
