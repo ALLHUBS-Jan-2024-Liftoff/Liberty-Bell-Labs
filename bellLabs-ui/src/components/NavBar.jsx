@@ -11,20 +11,20 @@ export default function NavBar() {
     </button>
     <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div className="navbar-nav">
-        <a className="nav-link active" aria-current="page" href="#">Home</a>
-        <a className="nav-link" href="#">Features</a>
-        <a className="nav-link" href="#">Pricing</a>
+        <a className="nav-link active" aria-current="page" href="/">Home</a>
+        <a className="nav-link" href="/features">Features</a>
+        <a className="nav-link" href="/pricing">Pricing</a>
         
       </div>
         {/* right side nav bar sign up and login */}
 
         <ul class="nav navbar-nav ms-auto">
         <li className="nav-item">
-          <a className="nav-link ms-3" href="#"><span className="glyphicon glyphicon-user"></span>Sign up</a>
+          <a className="nav-link ms-3" href="/register"><span className="glyphicon glyphicon-user"></span>Register</a>
         </li>
 
         <li className="nav-item">
-          <a className="nav-link ms-3" href="#"><span className="glyphicon glyphicon-user"></span>Login</a>
+          <a className="nav-link ms-3" href="/login"><span className="glyphicon glyphicon-user"></span>Login</a>
         </li>
         </ul>
     </div>
