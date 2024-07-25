@@ -1,6 +1,6 @@
 import './App.css'
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import NavBar from './layout/NavBar';
+import NavBar from './components/NavBar';
 
 function App() {
   
@@ -14,4 +14,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
