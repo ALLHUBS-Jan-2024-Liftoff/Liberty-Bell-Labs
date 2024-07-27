@@ -5,6 +5,8 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import NavBar from './components/NavBar';
 import Dashboard from './pages/Dashboard';
 import Register from './pages/Register';
+import { RegistrationPage } from './pages/RegistrationPage';
+import { LoginPage } from './pages/LoginPage';
 
 function App() {
   
@@ -19,7 +21,11 @@ function App() {
           />
           <Route 
             path="/register" 
-            element={<Register/>}
+            element={<RegistrationPage/>}
+          />
+          <Route 
+            path="/" 
+            element={<LoginPage/>}
           />
         </Routes>
       </div>
