@@ -37,7 +37,7 @@ function Dashboard() {
   };
 
   const toggleFormVisibility = () => {
-    setIsFormVisible(!isFormVisible);
+    setIsFormVisible(isFormVisible);
   };
 
   return (
@@ -49,6 +49,7 @@ function Dashboard() {
       {isFormVisible && <div className="ms-3"><ItemForm onAddItem={handleAddItem} /></div>}
       <button onClick={toggleFormVisibility}>Toggle Add Item</button>
     </div>
+    
   );
 }
 export default Dashboard;

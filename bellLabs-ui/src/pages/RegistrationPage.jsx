@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import { registerUser } from "../../services/userService";
+import { registerUser } from "../services/userService";
 
 export const RegistrationPage = () => {
   const [username, setUsername] = useState("");

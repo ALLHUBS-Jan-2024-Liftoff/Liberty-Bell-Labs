@@ -1,18 +1,20 @@
 // components/User/LoginPage.jsx
 import React, { useState } from "react";
-// import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-//   const { login } = useAuth();
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(email, password);
-      window.location.href = "/"; // Redirect after login
+      await login(username, password);
+      navigate("/dashboard"); // Redirect after login
     } catch (error) {
       setError("Login failed. Please check your credentials.");
     }
@@ -24,12 +26,12 @@ export const LoginPage = () => {
       {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label className="form-label">Email</label>
+          <label className="form-label">Username</label>
           <input
-            type="email"
+            type="text"
             className="form-control"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
