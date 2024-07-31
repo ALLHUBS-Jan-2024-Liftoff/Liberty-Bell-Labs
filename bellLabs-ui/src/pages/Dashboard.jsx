@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ItemForm from '../components/ItemForm';
 import ItemList from '../components/ItemList';
+import notebookList from '../assets/notebookList.jpg'
+
 
 function Dashboard() {
   const [items, setItems] = useState([]);
@@ -9,7 +11,8 @@ function Dashboard() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('/api/items')
+    //change the endpoint from 'api items' '/api/items' to http://localhost:8080/api/groceryitems
+    axios.get('http://localhost:8080/api/groceryitems')
       .then(response => setItems(response.data))
       .catch(error => {
         console.error('Error fetching items:', error);
@@ -42,6 +45,12 @@ function Dashboard() {
 
   return (
     <div className="d-flex align-items-start">
+      {/* image */}
+      
+      <img src={notebookList} 
+      alt="Notebook Item List" 
+      style={{width:300, height: 'auto', marginLeft: '0px' }}/>
+
       {error && <div className="error">{error}</div>}
       <div className="flex-grow-1">
         <ItemList items={items} onRemoveItems={handleRemoveItems} />
