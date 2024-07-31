@@ -3,14 +3,12 @@ package com.bellLabs.bellLabs_api.controllers.usercontrollers;
 import com.bellLabs.bellLabs_api.models.user.User;
 import com.bellLabs.bellLabs_api.repository.userRepository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
     @Autowired
     private UserRepository userRepository;

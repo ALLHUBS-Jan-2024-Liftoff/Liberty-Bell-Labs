@@ -1,8 +1,8 @@
 import React from 'react'
 
 export default function NavBar() {
-  return (
-   
+  
+  return ( 
         <nav className="navbar navbar-expand-lg bg-body-tertiary fixed-top">
   <div className="container-fluid">
     <a className="navbar-brand" href="#">Kitchen Compass</a>
@@ -24,7 +24,7 @@ export default function NavBar() {
         </li>
 
         <li className="nav-item">
-          <a className="nav-link ms-3" href="/login"><span className="glyphicon glyphicon-user"></span>Login</a>
+          <a className="nav-link ms-3" href="/"><span className="glyphicon glyphicon-user"></span>Login</a>
         </li>
         </ul>
     </div>
