@@ -11,8 +11,8 @@ function Dashboard() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    //change the endpoint from 'api items' '/api/items' to http://localhost:8080/api/groceryitems
-    axios.get('http://localhost:8080/api/groceryitems')
+    //change the endpoint from 'api items' '/api/items' to http://localhost:8080/api/items to make buttons appear
+    axios.get('http://localhost:8080/api/items')
       .then(response => setItems(response.data))
       .catch(error => {
         console.error('Error fetching items:', error);

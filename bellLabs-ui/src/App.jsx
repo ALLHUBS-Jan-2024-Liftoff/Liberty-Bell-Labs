@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import { RegistrationPage } from './pages/RegistrationPage';
 import { LoginPage } from './pages/LoginPage';
 import { AuthProvider } from './context/AuthContext';
+import  SearchRecipe  from './services/SearchRecipe';
 
 function App() {
   
@@ -27,6 +28,8 @@ function App() {
             path="/" 
             element={<LoginPage/>}
           />
+          {/* testing out searchrecipe */}
+          <Route path="/search" element={<SearchRecipe/>}/>
         </Routes>
     </BrowserRouter>
     </AuthProvider>
