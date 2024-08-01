@@ -43,7 +43,15 @@ function Dashboard() {
     setIsFormVisible(isFormVisible);
   };
 
+  //Navigate to shopping list page
+  const goToShoppingList = () => {
+    navigate('shoppinglists');
+  }
+
   return (
+    <div>
+      <h1>My Dashboard</h1>
+
     <div className="d-flex align-items-start">
       {/* image */}
       
@@ -57,6 +65,9 @@ function Dashboard() {
       </div>
       {isFormVisible && <div className="ms-3"><ItemForm onAddItem={handleAddItem} /></div>}
       <button onClick={toggleFormVisibility}>Toggle Add Item</button>
+    </div>
+    {/* Add shopping list button */}
+    <button onClick={goToShoppingList}>Shopping Lists</button>
     </div>
     
   );
