@@ -1,8 +1,11 @@
 package com.bellLabs.bellLabs_api.models;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
 public class ShoppingList {
     @Id
     @GeneratedValue
@@ -11,6 +14,14 @@ public class ShoppingList {
     private int userId;
 
     private String listName;
+
+    //Not all shoppingLists will be linked to a meal plan
+    private boolean isLinkedToMealPlan;
+
+    private int mealPlanId;
+
+//    @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<ShoppingListItem> items = new ArrayList<>();
 
     //Getters & Setters
 
@@ -38,4 +49,28 @@ public class ShoppingList {
     public void setListName(String listName) {
         this.listName = listName;
     }
+
+    public boolean isLinkedToMealPlan() {
+        return isLinkedToMealPlan;
+    }
+
+    public void setLinkedToMealPlan(boolean linkedToMealPlan) {
+        isLinkedToMealPlan = linkedToMealPlan;
+    }
+
+    public int getMealPlanId() {
+        return mealPlanId;
+    }
+
+    public void setMealPlanId(int mealPlanId) {
+        this.mealPlanId = mealPlanId;
+    }
+
+//    public List<ShoppingListItem> getItems() {
+//        return items;
+//    }
+//
+//    public void setItems(List<ShoppingListItem> items) {
+//        this.items = items;
+//    }
 }
