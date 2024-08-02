@@ -1,0 +1,102 @@
+/* Dashboard.css */
+
+/* Wrapper for the entire dashboard */
+.dashboard-wrapper {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 30px; /* Ensure space below the form */
+  }
+  
+  /* Image container */
+  .image-container {
+    position: absolute;
+    left: 20px; /* Example positioning, adjust as needed */
+    top: 110px; /* Example positioning, adjust as needed */
+    z-index: 0;
+  }
+  
+  .image-container img {
+    width: 400px;
+    height: auto;
+  }
+  
+  /* Header section */
+  .dashboard-header {
+    position: relative; /* This can be absolute or relative depending on your layout needs */
+    margin-top: 25px; /* Adjust positioning as needed */
+    text-align: center;
+    width: 100%;
+    z-index: 1;
+  }
+  
+  /* Header title */
+  .dashboard-header h1 {
+    margin: 0;
+    padding: 0; 
+    flex-grow: 1;
+    font-size: 2rem;
+  }
+  
+  /* Button container */
+  .dashboard-buttons {
+    position: absolute;
+    right: 20px; /* Position buttons to the right */
+    top: 100px; /* Adjust the top value to position below the header */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  
+  .dashboard-buttons button {
+    margin-bottom: 10px; /* Space between buttons */
+    width: 150px;
+  }
+  
+  /* Item list styling */
+  .item-list-container {
+    padding: 25px;
+    width: 100%;
+    margin-top: 150px; /* Adjust margin as needed to place it correctly below the header */
+  }
+  
+  /* List item styling */
+  /* .item-list-container ul {
+    list-style-type: none;
+    padding: 0;
+  } */
+  
+  /* .item-list-container li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+   */
+  /* Checkbox and item details styling */
+  /* .item-list-container input[type="checkbox"] {
+    margin-right: 10px;
+  } */
+  
+  /* Remove Selected button styling */
+  .item-list-container button {
+    margin-top: 30px;
+    display: block;
+    margin-left: auto;
+    background-color: #1a1a1a;
+    color: #fff;
+    border: none;
+    /* padding: 10px 20px; */
+    /* border-radius: 5px; */
+    cursor: pointer;
+  }
+  
+  .item-list-container button:hover {
+    background-color: #333;
+  }
+  

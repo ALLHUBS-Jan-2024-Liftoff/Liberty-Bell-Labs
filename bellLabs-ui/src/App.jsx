@@ -8,6 +8,7 @@ import { RegistrationPage } from './pages/RegistrationPage';
 import { LoginPage } from './pages/LoginPage';
 import { AuthProvider } from './context/AuthContext';
 import  SearchRecipe  from './services/SearchRecipe';
+import ShoppingList from './pages/ShoppingList';
 
 function App() {
   
@@ -30,6 +31,7 @@ function App() {
           />
           {/* testing out searchrecipe */}
           <Route path="/search" element={<SearchRecipe/>}/>
+          <Route path="/shoppinglists" element={<ShoppingList/>}/>
         </Routes>
     </BrowserRouter>
     </AuthProvider>
