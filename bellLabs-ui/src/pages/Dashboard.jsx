@@ -2,16 +2,19 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ItemForm from '../components/ItemForm';
 import ItemList from '../components/ItemList';
-import notebookList from '../assets/notebookList.jpg'
-
+import notebookList from '../assets/notebookList.jpg';
+import '../Dashboard.css'; // Import the CSS file
+//import navigate
+import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
   const [items, setItems] = useState([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [error, setError] = useState(null);
+  //initialize navigate function
+  const navigate = useNavigate();
 
   useEffect(() => {
-    //change the endpoint from 'api items' '/api/items' to http://localhost:8080/api/items to make buttons appear
     axios.get('http://localhost:8080/api/items')
       .then(response => setItems(response.data))
       .catch(error => {
@@ -40,25 +43,44 @@ function Dashboard() {
   };
 
   const toggleFormVisibility = () => {
-    setIsFormVisible(isFormVisible);
+    setIsFormVisible(!isFormVisible);
+  };
+//calll navigate
+  const goToShoppingList = () => {
+    navigate('/shoppinglists');
   };
 
   return (
-    <div className="d-flex align-items-start">
-      {/* image */}
-      
-      <img src={notebookList} 
-      alt="Notebook Item List" 
-      style={{width:300, height: 'auto', marginLeft: '0px' }}/>
-
-      {error && <div className="error">{error}</div>}
-      <div className="flex-grow-1">
-        <ItemList items={items} onRemoveItems={handleRemoveItems} />
-      </div>
-      {isFormVisible && <div className="ms-3"><ItemForm onAddItem={handleAddItem} /></div>}
-      <button onClick={toggleFormVisibility}>Toggle Add Item</button>
+    <div className="dashboard-wrapper">
+    {/* <div className="image-container">
+      <img src={notebookList} alt="Notebook Item List" />
+    </div> */}
+  
+    <div className="dashboard-header">
+      <h1>My Dashboard</h1>
     </div>
-    
+  
+    <div className="dashboard-buttons">
+      <button onClick={toggleFormVisibility}>Toggle Add Item</button>
+      <button onClick={goToShoppingList}>Shopping Lists</button>
+    </div>
+  
+    {isFormVisible && <div className="form-container"><ItemForm onAddItem={handleAddItem} /></div>}
+  {/* //Notebook Image */}
+   <div className="image-container">
+      <img src={notebookList} alt="Notebook Item List" />
+    </div>
+  
+
+      <div className="content-container">
+        {error && <div className="error">{error}</div>}
+        <div className="item-list">
+          <ItemList items={items} onRemoveItems={handleRemoveItems} />
+        </div>
+        {/* {isFormVisible && <div className="form-container"><ItemForm onAddItem={handleAddItem} /></div>} */}
+      </div>
+    </div>
   );
 }
+
 export default Dashboard;

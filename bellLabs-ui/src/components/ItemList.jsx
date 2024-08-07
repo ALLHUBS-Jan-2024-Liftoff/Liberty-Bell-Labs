@@ -17,7 +17,8 @@ function ItemList({ items, onRemoveItems }) {
   };
 
   return (
-    <>
+    // 'remove selected' button name
+    <div className='item-list-container'>
       <ul>
         {items.map((item, index) => (
           <li key={index}>
@@ -31,7 +32,7 @@ function ItemList({ items, onRemoveItems }) {
         ))}
       </ul>
       <button onClick={handleRemove}>Remove Selected</button>
-    </>
+    </div>
   );
 }
 
