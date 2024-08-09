@@ -1,7 +1,7 @@
-import React from 'react';
+import {useState} from 'react';
 
 function ItemList({ items, onRemoveItems }) {
-  const [selectedItems, setSelectedItems] = React.useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const handleSelectItem = (itemId) => {
     setSelectedItems((prev) =>
@@ -27,7 +27,7 @@ function ItemList({ items, onRemoveItems }) {
               checked={selectedItems.includes(index)}
               onChange={() => handleSelectItem(index)}
             />
-            {item.name} // Expires on {item.expirationDate} // Quantity: {item.quantity} // {item.unit}
+            {item.name} Expires on {item.expirationDate} Quantity: {item.quantity} {item.unit}
           </li>
         ))}
       </ul>

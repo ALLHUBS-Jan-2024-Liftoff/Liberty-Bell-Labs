@@ -1,6 +1,5 @@
-import React from 'react';
 import './App.css'
-import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import NavBar from './components/NavBar';
 import Dashboard from './pages/Dashboard';
@@ -14,7 +13,7 @@ function App() {
   
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <Router>
         <NavBar/>
         <Routes>
           <Route 
@@ -33,7 +32,7 @@ function App() {
           <Route path="/search" element={<SearchRecipe/>}/>
           <Route path="/shoppinglists" element={<ShoppingList/>}/>
         </Routes>
-    </BrowserRouter>
+    </Router>
     </AuthProvider>
   )
 }
