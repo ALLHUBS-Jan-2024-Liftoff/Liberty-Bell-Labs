@@ -1,37 +1,38 @@
 // import React, { useState } from "react";
 // import axios from "axios";
+// import { useNavigate } from "react-router-dom";
 
-// function Register() {
+// function Login({ setAuthenticated }) {
 //   const [username, setUsername] = useState("");
 //   const [password, setPassword] = useState("");
-//   const [verifyPassword, setVerifyPassword] = useState("");
 //   const [message, setMessage] = useState("");
+//   const navigate = useNavigate();
 
-
-//   const handleRegister = async (e) => {
+//   const handleLogin = async (e) => {
 //     e.preventDefault();
 //     try {
 //       const response = await axios.post(
-//         "http://localhost:8080/register",
+//         "http://localhost:8080/login",
 //         {
 //           username,
 //           password,
-//           verifyPassword
 //         },
 //         {
 //           withCredentials: true,
 //         }
 //       );
+//       setAuthenticated(true);
 //       setMessage(response.data.message);
+//       navigate("/dashboard");
 //     } catch (error) {
-//       setMessage(error.response?.data?.message || "Registration failed");
+//       setMessage(error.response?.data?.message || "Login failed");
 //     }
 //   };
 
 //   return (
-//     <div>
-//       <h2>Register</h2>
-//       <form onSubmit={handleRegister}>
+//     <div className="container mt-5">
+//       <h2>Login</h2>
+//       <form onSubmit={handleLogin}>
 //       <div className="mb-3">
 //           <label className="form-label">Username</label>
 //           <input
@@ -52,23 +53,16 @@
 //             required
 //           />
 //         </div>
-//         <div className="mb-3">
-//           <label className="form-label">Verify Password</label>
-//           <input
-//             type="password"
-//             className="form-control"
-//             value={verifyPassword}
-//             onChange={(e) => setVerifyPassword(e.target.value)}
-//             required
-//           />
-//         </div>
 //         <button type="submit" className="btn btn-primary">
-//           Register
-//         </button>
+//           Login
+//         </button> 
+//         <div className="mb-3">
+//             <p>Don't have an account? <a href="/register">Create one.</a></p>
+//         </div>
 //       </form>
 //       {message && <p>{message}</p>}
 //     </div>
 //   );
 // }
 
-// export default Register;
+// export default Login;

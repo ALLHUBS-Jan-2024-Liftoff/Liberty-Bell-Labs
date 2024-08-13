@@ -20,7 +20,7 @@ public class AuthenticationFilter implements HandlerInterceptor {
     @Autowired
     AuthenticationController authenticationController;
 
-    private static final List<String> whitelist = Arrays.asList("/login", "/register", "/logout", "/css");
+    private static final List<String> whitelist = Arrays.asList("/login", "/register", "/logout");
 
     private static boolean isWhitelisted(String path) {
         for (String pathRoot : whitelist) {
@@ -51,8 +51,17 @@ public class AuthenticationFilter implements HandlerInterceptor {
         }
 
         // The user is NOT logged in
-        response.sendRedirect("/login");
-        return false;
+//        response.sendRedirect("/login");
+//        return false;
+        if (request.getMethod().equals("OPTIONS")) {
+            // For preflight requests, respond with the necessary CORS headers
+            response.setStatus(HttpServletResponse.SC_OK);
+            return true;
+        } else {
+            // For other requests, respond with a CORS error
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return false;
+        }
     }
 
 }
