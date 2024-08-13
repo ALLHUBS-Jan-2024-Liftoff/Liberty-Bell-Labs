@@ -31,8 +31,12 @@ function Dashboard() {
 
   const handleRemoveItems = (selectedIndices) => {
     const idsToDelete = selectedIndices.map(index => items[index].id);
-    axios.delete('http://localhost:8080/api/items', { data: idsToDelete })
-      .then(() => setItems(items.filter((_, index) => !selectedIndices.includes(index))))
+    const deleteRequests = idsToDelete.map(id => axios.delete(`http://localhost:8080/api/items/${id}`));
+
+    axios.all(deleteRequests)
+      .then(axios.spread((...responses) => {
+        setItems(items.filter((_, index) => !selectedIndices.includes(index)));
+      }))
       .catch(error => {
         console.error('Error deleting items:', error);
         setError('Error deleting items');
