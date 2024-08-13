@@ -34,7 +34,7 @@ function Dashboard() {
     const deleteRequests = idsToDelete.map(id => axios.delete(`http://localhost:8080/api/items/${id}`));
 
     axios.all(deleteRequests)
-      .then(axios.spread((...responses) => {
+      .then(axios.spread(() => {
         setItems(items.filter((_, index) => !selectedIndices.includes(index)));
       }))
       .catch(error => {

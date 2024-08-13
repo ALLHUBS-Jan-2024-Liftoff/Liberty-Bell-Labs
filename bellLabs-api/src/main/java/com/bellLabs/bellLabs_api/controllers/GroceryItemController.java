@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -50,6 +52,25 @@ public class GroceryItemController {
         try {
             groceryItemRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/items/{id}")
+    public ResponseEntity<GroceryItem> updateGroceryItem(@PathVariable("id") long id, @RequestBody GroceryItem groceryItem) {
+        try {
+            Optional<GroceryItem> groceryItemData = groceryItemRepository.findById(id);
+
+            if (groceryItemData.isPresent()) {
+                GroceryItem _groceryItem = groceryItemData.get();
+                _groceryItem.setName(groceryItem.getName());
+                _groceryItem.setQuantity(groceryItem.getQuantity());
+                _groceryItem.setUnit(groceryItem.getUnit());
+                return new ResponseEntity<>(groceryItemRepository.save(_groceryItem), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
