@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { registerUser } from "../services/userService";
 
 export const RegistrationPage = () => {
