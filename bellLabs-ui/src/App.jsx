@@ -73,9 +73,9 @@ function App() {
         ) : (
           <>
             <NavBar />
-            {/* <Link to="/dashboard">Dashboard</Link>
+            <Link to="/dashboard">Dashboard</Link>
             <Link to="/search">Search Recipe</Link>
-            <Link to="/logout">Logout</Link> */}
+            <Link to="/logout">Logout</Link>
           </>
         )}
       </nav>
