@@ -3,30 +3,39 @@ package com.bellLabs.bellLabs_api.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.GenerationType;
 
 @Entity
+@Table(name = "grocery_item")
 public class GroceryItem {
-    @Id
-    @GeneratedValue
-    private int groceryItemId;
+    @Id 
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "grocery_item_id")
+    private long id;
+
+    @Column(name = "name")
     private String name;
-    private int categoryId;
-    private int nutritionInfoId;
+
+    @Column(name = "quantity")
     private int quantity;
 
+    @Column(name = "unit")
     private String unit;
 
-    //private String expiration date?(would this be a string?)
-
-    //Getters and Setters
-
-
-    public int getGroceryItemId() {
-        return groceryItemId;
+    //no-argument constructor for JPA
+    public GroceryItem() {
     }
 
-    public void setGroceryItemId(int groceryItemId) {
-        this.groceryItemId = groceryItemId;
+    public GroceryItem(String name, int quantity, String unit) {
+        this.name = name;
+        this.quantity = quantity;
+        this.unit = unit;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getName() {
@@ -35,18 +44,6 @@ public class GroceryItem {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public int getNutritionInfoId() {
-        return nutritionInfoId;
     }
 
     public int getQuantity() {
@@ -65,9 +62,4 @@ public class GroceryItem {
         this.unit = unit;
     }
 
-    public void setNutritionInfoId(int nutritionInfoId) {
-        this.nutritionInfoId = nutritionInfoId;
-
-
-    }
 }

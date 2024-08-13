@@ -21,7 +21,7 @@ function Dashboard() {
   }, []);
 
   const handleAddItem = (item) => {
-    axios.post('/api/items', item)
+    axios.post('http://localhost:8080/api/items', item)
       .then(response => setItems([...items, response.data]))
       .catch(error => {
         console.error('Error adding item:', error);
