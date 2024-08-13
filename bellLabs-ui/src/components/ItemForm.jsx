@@ -1,14 +1,28 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-function ItemForm({ onAddItem }) {
+function ItemForm({ onAddItem, onUpdateItem, currentItem }) {
   const [name, setName] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
   const [quantity, setQuantity] = useState('');
   const [unit, setUnit] = useState('');
 
+  useEffect(() => {
+    if(currentItem) {
+      setName(currentItem.name);
+      setExpirationDate(currentItem.expirationDate);
+      setQuantity(currentItem.quantity);
+      setUnit(currentItem.unit);
+    }
+  }, [currentItem]);
+  
   const handleSubmit = (event) => {
     event.preventDefault();
-    onAddItem({ name, expirationDate, quantity, unit });
+    const item = { name, expirationDate, quantity, unit };
+    if(currentItem) {
+      onUpdateItem(currentItem.id, item);
+    } else {
+      onAddItem(item);
+    }
     setName('');
     setExpirationDate('');
     setQuantity('');
@@ -41,7 +55,7 @@ function ItemForm({ onAddItem }) {
         value={unit}
         onChange={(event) => setUnit(event.target.value)}
       />
-      <button type="submit">Add Item</button>
+      <button type="submit">{currentItem ? 'Update Item' : 'Add Item'}</button>
     </form>
   );
 }
