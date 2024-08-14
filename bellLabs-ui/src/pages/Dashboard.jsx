@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ItemForm from '../components/ItemForm';
 import ItemList from '../components/ItemList';
-import notebookList from '../assets/notebookList.jpg';
-import '../Dashboard.css'; // Import the CSS file
-//import navigate
-import { useNavigate } from 'react-router-dom';
+import '../Dashboard.css'; // Import the CSS file (if needed)
+import { useNavigate } from 'react-router-dom'; // Import navigate
 
 function Dashboard() {
   const [items, setItems] = useState([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [error, setError] = useState(null);
-  //initialize navigate function
-  const navigate = useNavigate();
+  const [currentItem, setCurrentItem] = useState(null); // State for item being updated
+  const navigate = useNavigate(); // Initialize navigate function
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/items')
@@ -24,7 +22,7 @@ function Dashboard() {
   }, []);
 
   const handleAddItem = (item) => {
-    axios.post('/api/items', item)
+    axios.post('http://localhost:8080/api/items', item)
       .then(response => setItems([...items, response.data]))
       .catch(error => {
         console.error('Error adding item:', error);
@@ -32,10 +30,26 @@ function Dashboard() {
       });
   };
 
+  const handleUpdateItem = (id, updatedItem) => {
+    axios.put(`http://localhost:8080/api/items/${id}`, updatedItem)
+    .then(response => {
+      setItems(items.map(item => item.id === id ? response.data : item));
+      setCurrentItem(null);
+    })
+    .catch(error => {
+      console.error('Error updating item:', error);
+      setError('Error updating item');
+    });
+  };
+
   const handleRemoveItems = (selectedIndices) => {
     const idsToDelete = selectedIndices.map(index => items[index].id);
-    axios.delete('/api/items', { data: idsToDelete })
-      .then(() => setItems(items.filter((_, index) => !selectedIndices.includes(index))))
+    const deleteRequests = idsToDelete.map(id => axios.delete(`http://localhost:8080/api/items/${id}`));
+
+    axios.all(deleteRequests)
+      .then(axios.spread(() => {
+        setItems(items.filter((_, index) => !selectedIndices.includes(index)));
+      }))
       .catch(error => {
         console.error('Error deleting items:', error);
         setError('Error deleting items');
@@ -45,39 +59,58 @@ function Dashboard() {
   const toggleFormVisibility = () => {
     setIsFormVisible(!isFormVisible);
   };
-//calll navigate
+
+  const handleEditItem = (item) => {
+    setCurrentItem(item);
+    setIsFormVisible(true);
+  };
+
   const goToShoppingList = () => {
     navigate('/shoppinglists');
   };
 
   return (
-    <div className="dashboard-wrapper">
-    {/* <div className="image-container">
-      <img src={notebookList} alt="Notebook Item List" />
-    </div> */}
-  
-    <div className="dashboard-header">
-      <h1>My Dashboard</h1>
-    </div>
-  
-    <div className="dashboard-buttons">
-      <button onClick={toggleFormVisibility}>Toggle Add Item</button>
-      <button onClick={goToShoppingList}>Shopping Lists</button>
-    </div>
-  
-    {isFormVisible && <div className="form-container"><ItemForm onAddItem={handleAddItem} /></div>}
-  {/* //Notebook Image */}
-   <div className="image-container">
-      <img src={notebookList} alt="Notebook Item List" />
-    </div>
-  
+    <div className="container mt-4">
 
-      <div className="content-container">
-        {error && <div className="error">{error}</div>}
-        <div className="item-list">
-          <ItemList items={items} onRemoveItems={handleRemoveItems} />
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h1>My Dashboard</h1>
+        <div>
+          <button
+            className="btn btn-secondary me-2"
+            onClick={toggleFormVisibility}
+          >
+            {isFormVisible ? 'Hide Add Item Form' : 'Add New Item'}
+          </button>
+          <button
+            className="btn btn-info"
+            onClick={goToShoppingList}
+          >
+            Shopping Lists
+          </button>
         </div>
-        {/* {isFormVisible && <div className="form-container"><ItemForm onAddItem={handleAddItem} /></div>} */}
+      </div>
+
+      {isFormVisible &&
+        <div className="mb-4">
+          <ItemForm 
+            onAddItem={handleAddItem}
+            onUpdateItem={handleUpdateItem}
+            currentItem={currentItem}
+          />
+        </div>
+      }
+
+      <div>
+        {error && (
+          <div className="alert alert-danger">
+            {error}
+          </div>
+        )}
+        <ItemList 
+          items={items} 
+          onRemoveItems={handleRemoveItems}
+          onEditItem={handleEditItem} 
+        />
       </div>
     </div>
   );

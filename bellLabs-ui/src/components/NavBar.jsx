@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function NavBar() {
   
   return ( 
@@ -18,7 +16,7 @@ export default function NavBar() {
       </div>
         {/* right side nav bar logout */}
 
-        <ul class="nav navbar-nav ms-auto">
+        <ul className="nav navbar-nav ms-auto">
         <li className="nav-item">
           <a className="nav-link ms-3" href="/logout"><span className="glyphicon glyphicon-user"></span>Logout</a>
         </li>
