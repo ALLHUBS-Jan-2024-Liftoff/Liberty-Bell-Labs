@@ -1,3 +1,4 @@
+
 // import React from 'react';
 // import './App.css'
 // import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
@@ -49,6 +50,7 @@ import {
   Navigate,
   Link,
 } from "react-router-dom";
+
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
