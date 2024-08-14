@@ -1,6 +1,6 @@
 import {useState} from 'react';
 
-function ItemList({ items, onRemoveItems }) {
+function ItemList({ items, onRemoveItems, onEditItem }) {
   const [selectedItems, setSelectedItems] = useState([]);
 
   const handleSelectItem = (itemId) => {
@@ -27,7 +27,8 @@ function ItemList({ items, onRemoveItems }) {
               checked={selectedItems.includes(index)}
               onChange={() => handleSelectItem(index)}
             />
-            {item.name} Expires on {item.expirationDate} Quantity: {item.quantity} {item.unit}
+            {item.name} exp: {item.expirationDate} Quantity: {item.quantity} {item.unit}
+            <button onClick={()=> onEditItem(item)}>Edit</button>
           </li>
         ))}
       </ul>

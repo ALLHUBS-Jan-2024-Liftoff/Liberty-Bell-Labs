@@ -9,6 +9,7 @@ function Dashboard() {
   const [items, setItems] = useState([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [error, setError] = useState(null);
+  const [currentItem, setCurrentItem] = useState(null); //State for item being updated
   const navigate = useNavigate(); //initialize navigate function
 
   useEffect(() => {
@@ -21,7 +22,7 @@ function Dashboard() {
   }, []);
 
   const handleAddItem = (item) => {
-    axios.post('/api/items', item)
+    axios.post('http://localhost:8080/api/items', item)
       .then(response => setItems([...items, response.data]))
       .catch(error => {
         console.error('Error adding item:', error);
@@ -29,10 +30,26 @@ function Dashboard() {
       });
   };
 
+  const handleUpdateItem = (id, updatedItem) => {
+    axios.put(`http://localhost:8080/api/items/${id}`, updatedItem)
+    .then(response => {
+      setItems(items.map(item => item.id === id ? response.data : item));
+      setCurrentItem(null);
+    })
+    .catch(error => {
+      console.error('Error updating item:', error);
+      setError('Error updating item');
+    });
+  };
+
   const handleRemoveItems = (selectedIndices) => {
     const idsToDelete = selectedIndices.map(index => items[index].id);
-    axios.delete('/api/items', { data: idsToDelete })
-      .then(() => setItems(items.filter((_, index) => !selectedIndices.includes(index))))
+    const deleteRequests = idsToDelete.map(id => axios.delete(`http://localhost:8080/api/items/${id}`));
+
+    axios.all(deleteRequests)
+      .then(axios.spread(() => {
+        setItems(items.filter((_, index) => !selectedIndices.includes(index)));
+      }))
       .catch(error => {
         console.error('Error deleting items:', error);
         setError('Error deleting items');
@@ -41,6 +58,11 @@ function Dashboard() {
 
   const toggleFormVisibility = () => {
     setIsFormVisible(!isFormVisible);
+  };
+
+  const handleEditItem = (item) => {
+    setCurrentItem(item);
+    setIsFormVisible(true);
   };
 //call navigate
   const goToShoppingList = () => {
@@ -61,7 +83,11 @@ function Dashboard() {
 
       {isFormVisible &&
         <div className="form-container">
-          <ItemForm onAddItem={handleAddItem} />
+          <ItemForm 
+            onAddItem={handleAddItem}
+            onUpdateItem={handleUpdateItem}
+            currentItem={currentItem}
+          />
         </div>
       }
 
@@ -71,10 +97,13 @@ function Dashboard() {
           </div>
         }
         <div className="item-list">
-          <ItemList items={items} onRemoveItems={handleRemoveItems} />
+          <ItemList 
+            items={items} 
+            onRemoveItems={handleRemoveItems}
+            onEditItem={handleEditItem} 
+          />
         </div>
       </div>
-
     </div>
   );
 }
