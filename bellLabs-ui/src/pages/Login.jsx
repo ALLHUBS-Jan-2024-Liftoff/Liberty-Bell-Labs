@@ -31,7 +31,7 @@ function Login({ setAuthenticated }) {
 
   return (
     <div className="container mt-5">
-      <h2>Login</h2>
+      <center><h2>Login</h2></center>
       <form onSubmit={handleLogin}>
       <div className="mb-3">
           <label className="form-label">Username</label>

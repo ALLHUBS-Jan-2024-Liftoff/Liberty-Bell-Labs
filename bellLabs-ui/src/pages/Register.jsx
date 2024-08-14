@@ -66,7 +66,8 @@ function Register() {
           Register
         </button>
       </form>
-      {message && <p>{message}</p>}
+      {message === 'Given user details are successfully registered' && <p> Registration successful. Click <a href="/login"> here</a> to login.</p>}
+      {message === 'User Already Exists.' && <p>{message}</p>}
     </div>
   );
 }

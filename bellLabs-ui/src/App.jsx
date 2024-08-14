@@ -58,6 +58,7 @@ import Dashboard from './pages/Dashboard';
 import  SearchRecipe  from './services/SearchRecipe';
 import ShoppingList from './pages/ShoppingList';
 import "./App.css";
+import Home from "./pages/Home";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -67,15 +68,15 @@ function App() {
       <nav>
         {!authenticated ? (
           <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
+            {/* <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link> */}
           </>
         ) : (
           <>
             <NavBar />
-            <Link to="/dashboard">Dashboard</Link>
+            {/* <Link to="/dashboard">Dashboard</Link>
             <Link to="/search">Search Recipe</Link>
-            <Link to="/logout">Logout</Link>
+            <Link to="/logout">Logout</Link> */}
           </>
         )}
       </nav>
@@ -83,6 +84,7 @@ function App() {
         <header className="App-header">
           <Routes>
             {/* Public Routes */}
+            <Route path="/" element={<Home />} />
             <Route
               path="/login"
               element={<Login setAuthenticated={setAuthenticated} />}
