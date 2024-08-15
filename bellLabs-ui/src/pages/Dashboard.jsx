@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ItemForm from '../components/ItemForm';
 import ItemList from '../components/ItemList';
-import '../Dashboard.css'; // Import the CSS file
-import { useNavigate } from 'react-router-dom'; //import navigate
+import '../Dashboard.css'; // Import the CSS file (if needed)
+import { useNavigate } from 'react-router-dom'; // Import navigate
 
 function Dashboard() {
   const [items, setItems] = useState([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [error, setError] = useState(null);
-  const [currentItem, setCurrentItem] = useState(null); //State for item being updated
-  const navigate = useNavigate(); //initialize navigate function
+  const [currentItem, setCurrentItem] = useState(null); // State for item being updated
+  const navigate = useNavigate(); // Initialize navigate function
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/items')
@@ -64,25 +64,34 @@ function Dashboard() {
     setCurrentItem(item);
     setIsFormVisible(true);
   };
-//call navigate
+
   const goToShoppingList = () => {
     navigate('/shoppinglists');
   };
 
   return (
-    <div className="dashboard-wrapper">
+    <div className="container mt-4">
 
-      <div className="dashboard-header">
+      <div className="d-flex justify-content-between align-items-center mb-3">
         <h1>My Dashboard</h1>
-      </div>
-
-      <div className="dashboard-buttons">
-        <button onClick={toggleFormVisibility}>Toggle Add Item</button>
-        <button onClick={goToShoppingList}>Shopping Lists</button>
+        <div>
+          <button
+            className="btn btn-secondary me-2"
+            onClick={toggleFormVisibility}
+          >
+            {isFormVisible ? 'Hide Add Item Form' : 'Add New Item'}
+          </button>
+          <button
+            className="btn btn-info"
+            onClick={goToShoppingList}
+          >
+            Shopping Lists
+          </button>
+        </div>
       </div>
 
       {isFormVisible &&
-        <div className="form-container">
+        <div className="mb-4">
           <ItemForm 
             onAddItem={handleAddItem}
             onUpdateItem={handleUpdateItem}
@@ -91,18 +100,17 @@ function Dashboard() {
         </div>
       }
 
-      <div className="content-container">
-        {error &&
-          <div className="error">{error}
+      <div>
+        {error && (
+          <div className="alert alert-danger">
+            {error}
           </div>
-        }
-        <div className="item-list">
-          <ItemList 
-            items={items} 
-            onRemoveItems={handleRemoveItems}
-            onEditItem={handleEditItem} 
-          />
-        </div>
+        )}
+        <ItemList 
+          items={items} 
+          onRemoveItems={handleRemoveItems}
+          onEditItem={handleEditItem} 
+        />
       </div>
     </div>
   );

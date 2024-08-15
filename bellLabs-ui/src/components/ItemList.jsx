@@ -18,21 +18,42 @@ function ItemList({ items, onRemoveItems, onEditItem }) {
 
   return (
     // 'remove selected' button name
-    <div className='item-list-container'>
-      <ul>
+    <div>
+    <table className="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Select</th>
+          <th scope="col">Name</th>
+          <th scope="col">Expiration Date</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Unit</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
         {items.map((item, index) => (
-          <li key={index}>
-            <input
-              type="checkbox"
-              checked={selectedItems.includes(index)}
-              onChange={() => handleSelectItem(index)}
-            />
-            {item.name} exp: {item.expirationDate} Quantity: {item.quantity} {item.unit}
-            <button onClick={()=> onEditItem(item)}>Edit</button>
-          </li>
+          <tr key={index}>
+            <td>
+              <input
+                type="checkbox"
+                checked={selectedItems.includes(index)}
+                onChange={() => handleSelectItem(index)}
+              />
+            </td>
+            <td>{item.name}</td>
+            <td>{item.expirationDate}</td>
+            <td>{item.quantity}</td>
+            <td>{item.unit}</td>
+            <td>
+              <button className="btn btn-primary btn-sm" onClick={() => onEditItem(item)}>
+                Edit
+              </button>
+            </td>
+          </tr>
         ))}
-      </ul>
-      <button onClick={handleRemove}>Remove Selected</button>
+      </tbody>
+    </table>
+      <button className="btn btn-danger btn-sm" onClick={handleRemove}>Remove Selected</button>
     </div>
   );
 }

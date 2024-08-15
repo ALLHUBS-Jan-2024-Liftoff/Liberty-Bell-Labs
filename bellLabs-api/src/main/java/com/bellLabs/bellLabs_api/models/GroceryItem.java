@@ -6,6 +6,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.GenerationType;
+import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "grocery_item")
@@ -24,14 +26,19 @@ public class GroceryItem {
     @Column(name = "unit")
     private String unit;
 
+    @Column(name = "expiration_date")
+    private LocalDate expirationDate;
+
     //no-argument constructor for JPA
     public GroceryItem() {
     }
 
-    public GroceryItem(String name, int quantity, String unit) {
+
+    public GroceryItem(String name, int quantity, String unit, LocalDate expirationDate) {
         this.name = name;
         this.quantity = quantity;
         this.unit = unit;
+        this.expirationDate = expirationDate;
     }
 
     public long getId() {
@@ -60,6 +67,14 @@ public class GroceryItem {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public LocalDate getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
 }
