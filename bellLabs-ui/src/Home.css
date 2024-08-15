@@ -1,0 +1,70 @@
+/* Home.css */
+
+.home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 70px); /* Adjust height to account for navbar height */
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    padding: 20px;
+    padding-top: 70px; /* Add padding-top to ensure content is below the navbar */
+  }
+  
+  .home-content {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    max-width: 700px;
+    text-align: center;
+  }
+  
+  .logo {
+    max-width: 80%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+  h1 {
+    color: #343a40;
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+  
+  p.lead {
+    color: #495057;
+    font-size: 1.25rem;
+    margin-top: 10px;
+  }
+  
+  p {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-top: 15px;
+  }
+  
+  .cta-buttons {
+    margin-top: 20px;
+  }
+  
+  .cta-buttons .btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    color: white;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    color: white;
+  }
+  
+  .btn:hover {
+    opacity: 0.9;
+  }
+  

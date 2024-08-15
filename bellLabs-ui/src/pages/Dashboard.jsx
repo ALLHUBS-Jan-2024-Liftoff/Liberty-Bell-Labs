@@ -71,32 +71,43 @@ function Dashboard() {
 
   return (
     <div className="container mt-4">
+      {/* Hero Section */}
+      <div className="hero text-black bg-dark bg-opacity-10 text-center py-5 mb-4 rounded-lg shadow">
+        <h1 className="display-4 mb-3">Welcome to Your Dashboard!</h1>
+        <p className="lead mb-4">
+          Manage your items efficiently. Add, update, or remove items as needed and keep track of everything seamlessly. Use the buttons below to get started.
+        </p>
+      </div>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h1>My Dashboard</h1>
+        <h2>Item Management</h2>
         <div>
           <button
-            className="btn btn-secondary me-2"
+            className="btn btn-light me-2"
             onClick={toggleFormVisibility}
           >
-            {isFormVisible ? 'Hide Add Item Form' : 'Add New Item'}
+            {isFormVisible ? 'Hide Form' : 'Add New Item'}
           </button>
           <button
-            className="btn btn-info"
+            className="btn btn-light"
             onClick={goToShoppingList}
           >
-            Shopping Lists
+            View Shopping Lists
           </button>
         </div>
       </div>
 
       {isFormVisible &&
         <div className="mb-4">
-          <ItemForm 
-            onAddItem={handleAddItem}
-            onUpdateItem={handleUpdateItem}
-            currentItem={currentItem}
-          />
+          <div className="card shadow-sm">
+            <div className="card-body">
+              <ItemForm 
+                onAddItem={handleAddItem}
+                onUpdateItem={handleUpdateItem}
+                currentItem={currentItem}
+              />
+            </div>
+          </div>
         </div>
       }
 
@@ -106,11 +117,15 @@ function Dashboard() {
             {error}
           </div>
         )}
-        <ItemList 
-          items={items} 
-          onRemoveItems={handleRemoveItems}
-          onEditItem={handleEditItem} 
-        />
+        <div className="card shadow-sm">
+          <div className="card-body">
+            <ItemList 
+              items={items} 
+              onRemoveItems={handleRemoveItems}
+              onEditItem={handleEditItem} 
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,66 @@
+/* src/pages/LearnMore.css */
+
+.learn-more-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 70px); /* Adjust based on navbar height */
+    background: #f8f9fa;
+    padding: 20px;
+    padding-top: 70px; /* Adjust based on navbar height */
+  }
+  
+  .learn-more-content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    text-align: center;
+  }
+  
+  h1 {
+    color: #343a40;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  p {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  .features {
+    margin-bottom: 20px;
+  }
+  
+  .feature-item {
+    margin-bottom: 15px;
+  }
+  
+  .feature-item h2 {
+    color: #495057;
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+  }
+  
+  .feature-item p {
+    color: #6c757d;
+    font-size: 0.875rem;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  

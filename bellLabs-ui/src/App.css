@@ -11,6 +11,7 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
@@ -41,3 +42,18 @@
 .read-the-docs {
   color: #888;
 }
+
+.navbar-nav.ms-auto .nav-link {
+  font-weight: bold;
+  color: #007bff; /* Change color as needed */
+}
+
+.navbar-nav.ms-auto .nav-link:hover {
+  color: #0056b3; /* Change hover color as needed */
+}
+
+.navbar-nav.ms-auto {
+  margin-left: auto;
+}
+
+
