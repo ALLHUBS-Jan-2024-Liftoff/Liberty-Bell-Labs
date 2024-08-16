@@ -29,7 +29,7 @@ function NavBar({ authenticated }) {
                   <Link className="nav-link" to="/search">Search Recipe</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/shopping-list">Shopping List</Link>
+                  <Link className="nav-link" to="/shoppinglists">Shopping List</Link>
                 </li>
               </>
             ) : (
