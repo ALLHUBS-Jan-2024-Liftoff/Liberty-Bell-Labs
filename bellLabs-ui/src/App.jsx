@@ -114,7 +114,7 @@ function App() {
                 <SearchRecipe />
               </ProtectedRoute>
             } />
-            <Route path="/shopping-list" element={
+            <Route path="/shoppinglists" element={
               <ProtectedRoute authenticated={authenticated}>
                 <ShoppingList />
               </ProtectedRoute>
