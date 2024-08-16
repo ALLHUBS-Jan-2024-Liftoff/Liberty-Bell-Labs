@@ -102,6 +102,7 @@ function App() {
                   path="/logout"
                   element={<Logout setAuthenticated={setAuthenticated} />}
                 />
+                <Route path="/shoppinglists" element={<ShoppingList/>}/>
               </>
             ) : (
               <Route path="*" element={<Navigate to="/login" replace />} />
