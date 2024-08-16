@@ -11,17 +11,24 @@ function ShoppingList() {
   const [items, setItems] = useState([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [error, setError] = useState(null);
-  const [currentItem, setCurrentItem] = useState(null); 
+  const [currentItem, setCurrentItem] = useState(null);
+  const [shoppingListName, setShoppingListName] = useState('');
+  const [shoppingListId, setShoppingListId] = useState(null); 
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/items')
+if (shoppingListId) {
+    axios.get(`http://localhost:8080/api/items`)
       .then(response => setItems(response.data))
       .catch(error => {
         console.error('Error fetching items:', error);
         setError('Error fetching items');
       });
-  }, []);
+    }
+  }, [shoppingListId]);
+
+
+    
 
   const handleAddItem = (item) => {
     axios.post('http://localhost:8080/api/items', item)
@@ -67,10 +74,47 @@ function ShoppingList() {
     setIsFormVisible(true);
   };
 
+  //create shoppinglist
+  const handleCreateShoppingList = () => {
+    const shoppinglist = {name: shoppingListName};
+    axios.post('http://localhost:8080/api/shoppinglists', shoppinglist)
+    .then(response => {
+        setShoppingListId(response.data.id);
+        setShoppingListName('');
+        setIsFormVisible(false);
+    })
+    .catch(error => {
+        console.error('Error creating shopping lists:', error);
+        setError('Error creating shopping list');
+    });
+  };
+
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h1>Shopping List</h1>
+        {!isFormVisible && (
+             <button
+             className="btn btn-primary"
+             onClick={() => setIsFormVisible(true)}
+           >
+             Create New Shopping List
+           </button>
+         )}
+
+         {isFormVisible && (
+            <div className="d-flex">
+                <input type="text"
+                className="form-control me-2"
+                value={shoppingListName}
+                onChange={(e) => setShoppingListName(e.target.value)}
+                placeholder='Enter shopping list name'/>
+
+                <button className='btn btn-success'
+                onClick={handleCreateShoppingList}>Create</button>
+                </div>
+         )}
+       
         <button
           className="btn btn-secondary"
           onClick={toggleFormVisibility}
