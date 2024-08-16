@@ -88,12 +88,6 @@ function Dashboard() {
           >
             {isFormVisible ? 'Hide Form' : 'Add New Item'}
           </button>
-          <button
-            className="btn btn-light"
-            onClick={goToShoppingList}
-          >
-            View Shopping Lists
-          </button>
         </div>
       </div>
 
