@@ -42,9 +42,7 @@ public class GroceryItemController {
     @PostMapping("/items")
     public ResponseEntity<GroceryItem> createGroceryItem(@RequestBody GroceryItem groceryItem) {
         try {
-<
             GroceryItem newGroceryItem = groceryItemRepository.save(new GroceryItem(groceryItem.getName(), groceryItem.getQuantity(), groceryItem.getUnit(), groceryItem.getExpirationDate()));
-
             return new ResponseEntity<>(newGroceryItem, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
