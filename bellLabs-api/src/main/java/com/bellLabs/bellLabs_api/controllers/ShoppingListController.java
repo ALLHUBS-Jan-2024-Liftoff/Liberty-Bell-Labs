@@ -27,7 +27,8 @@ public class ShoppingListController {
     @PostMapping
     public ResponseEntity<ShoppingList> createShoppingList(@RequestBody ShoppingList shoppingList) {
         try {
-            ShoppingList newShoppingList = shoppingListRepository.save(shoppingList);
+
+            ShoppingList newShoppingList = shoppingListRepository.save(new ShoppingList(shoppingList.getListName()));
             return new ResponseEntity<>(newShoppingList, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -38,16 +39,3 @@ public class ShoppingListController {
 }
 
 
-
-
-//@PostMapping("/items")
-//public ResponseEntity<GroceryItem> createGroceryItem(@RequestBody GroceryItem groceryItem) {
-//    try {
-//
-//        GroceryItem newGroceryItem = groceryItemRepository.save(new GroceryItem(groceryItem.getName(), groceryItem.getQuantity(), groceryItem.getUnit(), groceryItem.getExpirationDate()));
-//
-//        return new ResponseEntity<>(newGroceryItem, HttpStatus.CREATED);
-//    } catch (Exception e) {
-//        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
-//}

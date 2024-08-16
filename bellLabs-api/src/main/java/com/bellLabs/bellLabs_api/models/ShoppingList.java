@@ -6,13 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "shopping_list")
 public class ShoppingList {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "shopping_list_id")
     private int shoppingListId;
 
     private int userId;
 
+    @Column(name = "list_name")
     private String listName;
 
     //Not all shoppingLists will be linked to a meal plan
@@ -20,9 +23,14 @@ public class ShoppingList {
 
     private int mealPlanId;
 
-//    @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<ShoppingListItem> items = new ArrayList<>();
 
+    // Default constructor
+    public ShoppingList() {
+    }
+
+    public ShoppingList(String listName) {
+        this.listName = listName;
+    }
     //Getters & Setters
 
 
