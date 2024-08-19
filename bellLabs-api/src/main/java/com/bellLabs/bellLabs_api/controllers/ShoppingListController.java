@@ -27,7 +27,7 @@ public class ShoppingListController {
     @PostMapping
     public ResponseEntity<ShoppingList> createShoppingList(@RequestBody ShoppingList shoppingList) {
         try {
-            ShoppingList newShoppingList = shoppingListRepository.save(shoppingList);
+            ShoppingList newShoppingList = shoppingListRepository.save(new ShoppingList(shoppingList.getListName()));
             return new ResponseEntity<>(newShoppingList, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -8,6 +8,12 @@ import { useNavigate } from 'react-router-dom'; // Import navigate
 
 
 function ShoppingList() {
+   //hold all shoppinglists
+   const [shoppingLists, setShoppingLists] = useState([]);
+   //hold new list name
+   const [newListName, setNewListName] = useState('');
+   //hold selected list
+   const [selectedList, setSelectedList] = useState(null);
   const [items, setItems] = useState([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [error, setError] = useState(null);
@@ -15,6 +21,12 @@ function ShoppingList() {
   const [shoppingListName, setShoppingListName] = useState('');
   const [shoppingListId, setShoppingListId] = useState(null); 
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+    fetchShoppingLists();
+}, []);
+
 
   useEffect(() => {
 if (shoppingListId) {
@@ -76,9 +88,10 @@ if (shoppingListId) {
 
   //create shoppinglist
   const handleCreateShoppingList = () => {
-    const shoppinglist = {name: shoppingListName};
+    const shoppinglist = {listName: shoppingListName};
     axios.post('http://localhost:8080/api/shoppinglists', shoppinglist)
     .then(response => {
+      setShoppingLists([...shoppingLists, response.data]);
         setShoppingListId(response.data.id);
         setShoppingListName('');
         setIsFormVisible(false);
@@ -88,6 +101,46 @@ if (shoppingListId) {
         setError('Error creating shopping list');
     });
   };
+
+ // Fetch all shopping lists
+ const fetchShoppingLists = async () => {
+  try {
+      const response = await axios.get('http://localhost:8080/api/shoppinglists');
+      setShoppingLists(Array.isArray(response.data) ? response.data : []);
+      console.log('Fetched Shopping Lists:', response.data);
+  } catch (error) {
+      console.error('Error fetching shopping lists', error);
+      setShoppingLists([]);
+  }
+};
+
+
+
+const selectList = (list) => {
+setSelectedList(list);
+fetchItemsForSelectedList(list.shoppingListId); 
+};
+
+const fetchItemsForSelectedList = async (listId) => {
+try {
+  const response = await axios.get(`http://localhost:8080/api/shoppinglists/${listId}/items`);
+  setItems(response.data);
+} catch (error) {
+  console.error('Error fetching items:', error);
+  setError('Error fetching items');
+}
+};
+
+const handleToggleList = (listId) => {
+if (shoppingListId === listId) {
+  setShoppingListId(null); // Close the current list
+} else {
+  setShoppingListId(listId); // Open the new list
+  fetchItemsForSelectedList(listId);
+}
+};
+
+
 
   return (
     <div className="container mt-4">
@@ -123,11 +176,52 @@ if (shoppingListId) {
         </button>
       </div>
 
+ {/* display shopping list names below header */}
+ {shoppingLists.length > 0 ? (
+        <div id="accordion">
+          {shoppingLists.map((list, index) => (
+            <div className="card" key={list.shoppingListId}>
+              <div className="card-header" id={`heading${index}`}>
+                <h5 className="mb-0">
+                  <button
+                    className="btn btn-link"
+                    data-toggle="collapse"
+                    data-target={`#collapse${index}`}
+                    aria-expanded="true"
+                    aria-controls={`collapse${index}`}
+                    onClick={() => handleToggleList(list.shoppingListId)}
+                  >
+                    {list.listName}
+                  </button>
+                </h5>
+              </div>
+
+              <div
+                id={`collapse${index}`}
+                className={`collapse ${shoppingListId === list.shoppingListId ? 'show' : ''}`}
+                aria-labelledby={`heading${index}`}
+                data-parent="#accordion"
+              >
+                <div className="card-body">
+                  <ItemList
+                    items={items}
+                    onRemoveItems={handleRemoveItems}
+                    onEditItem={handleEditItem}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p>No shopping lists available</p>
+      )}
+
       {isFormVisible &&
         <div className="mb-4">
           <ItemForm 
             onAddItem={handleAddItem}
-            onUpdateItem={handleUpdateItem}
+            onUpdateItem={() => {}}
             currentItem={currentItem}
           />
         </div>
