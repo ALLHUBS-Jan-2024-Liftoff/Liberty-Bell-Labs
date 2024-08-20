@@ -33,7 +33,7 @@ function ItemList({ items, onRemoveItems, onEditItem }) {
           ingredients: selectedIngredients.join(','),
           number: 5,  // Increase the number to get a wider range
           ranking: 2,  // Use ranking to diversify sources
-          apiKey: '032109f1df6c49debc5f46fd6e767ad6',
+          apiKey: import.meta.env.VITE_SPOONACULAR_API_KEY,
         }
       });
   
@@ -44,7 +44,7 @@ function ItemList({ items, onRemoveItems, onEditItem }) {
       const detailedRecipeRequests = recipeIds.map(id =>
         axios.get(`https://api.spoonacular.com/recipes/${id}/information`, {
           params: {
-            apiKey: '032109f1df6c49debc5f46fd6e767ad6',
+            apiKey: import.meta.env.VITE_SPOONACULAR_API_KEY,
           }
         })
       );
