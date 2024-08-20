@@ -15,9 +15,9 @@ const SearchRecipe = () => {
             const response = await axios.get('https://api.spoonacular.com/recipes/complexSearch', {
                 params: {
                     query: query, //
-                    apiKey: '1fd5a4eb995e4292b43a689019516f9b' , // API key
+                    apiKey: 'd94d850b0df24210b9923c04169d6df0' , // API key
                 },
-            });
+            }); 
             setRecipes(response.data.results);
         } catch (error) {
             console.error("Error feathing recipes", error);

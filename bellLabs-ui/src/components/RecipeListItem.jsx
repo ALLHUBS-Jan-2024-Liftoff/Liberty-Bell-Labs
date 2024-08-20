@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { animated, useSpring } from 'react-spring';
 import { Link } from 'react-router-dom';
 import { Card, Button } from '@blueprintjs/core';
-import { capitalize } from '../../../utils/helpers';
+import { capitalize } from '../helpers';
 import Image from '../assets/Image';
 
 const RecipeListItem = ({ recipe, animationStyles }) => {
     const [flipped, setFlipped] = useState(false);
     const {
         image, usedIngredientCount, missedIngredientCount,
-        title, usedIngredients, missedIngredients,
+        title, usedIngredients, missedIngredients, 
     } = recipe;
 
     const { transform, opacity } = useSpring({
