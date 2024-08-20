@@ -15,7 +15,7 @@ const SearchRecipe = () => {
             const response = await axios.get('https://api.spoonacular.com/recipes/complexSearch', {
                 params: {
                     query: query, //
-                    apiKey: '1fd5a4eb995e4292b43a689019516f9b' , // API key
+                    apiKey: import.meta.env.VITE_SPOONACULAR_API_KEY , // API key
                 },
             });
             setRecipes(response.data.results);
