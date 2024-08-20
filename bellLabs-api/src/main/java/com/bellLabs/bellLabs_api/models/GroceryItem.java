@@ -1,11 +1,7 @@
 package com.bellLabs.bellLabs_api.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 
@@ -28,6 +24,10 @@ public class GroceryItem {
 
     @Column(name = "expiration_date")
     private LocalDate expirationDate;
+
+    @ManyToOne
+    @JoinColumn(name = "shopping_list_id")
+    private ShoppingList shoppingList;
 
     //no-argument constructor for JPA
     public GroceryItem() {
@@ -77,4 +77,11 @@ public class GroceryItem {
         this.expirationDate = expirationDate;
     }
 
+    public ShoppingList getShoppingList() {
+        return shoppingList;
+    }
+
+    public void setShoppingList(ShoppingList shoppingList) {
+        this.shoppingList = shoppingList;
+    }
 }

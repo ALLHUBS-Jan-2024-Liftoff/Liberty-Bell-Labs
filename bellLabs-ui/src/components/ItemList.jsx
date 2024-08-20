@@ -1,6 +1,6 @@
 import {useState} from 'react';
 
-function ItemList({ items, onRemoveItems, onEditItem }) {
+function ItemList({ items = [], onRemoveItems, onEditItem }) {
   const [selectedItems, setSelectedItems] = useState([]);
 
   const handleSelectItem = (itemId) => {
@@ -31,7 +31,8 @@ function ItemList({ items, onRemoveItems, onEditItem }) {
         </tr>
       </thead>
       <tbody>
-        {items.map((item, index) => (
+        {Array.isArray(items) && items.length > 0 ? (
+          items.map((item, index) => (
           <tr key={index}>
             <td>
               <input
@@ -50,7 +51,13 @@ function ItemList({ items, onRemoveItems, onEditItem }) {
               </button>
             </td>
           </tr>
-        ))}
+        ))
+        ) : (
+          <tr>
+              <td colSpan="6">No items available</td>
+            </tr>
+        )}
+        
       </tbody>
     </table>
       <button className="btn btn-danger btn-sm" onClick={handleRemove}>Remove Selected</button>

@@ -10,66 +10,111 @@ import { useNavigate } from 'react-router-dom'; // Import navigate
 function ShoppingList() {
    //hold all shoppinglists
    const [shoppingLists, setShoppingLists] = useState([]);
-   //hold new list name
-   const [newListName, setNewListName] = useState('');
-   //hold selected list
-   const [selectedList, setSelectedList] = useState(null);
-  const [items, setItems] = useState([]);
-  const [isFormVisible, setIsFormVisible] = useState(false);
+  // Hold selected list
+  const [selectedList, setSelectedList] = useState(null);
+  // Hold items per list
+  const [itemsPerList, setItemsPerList] = useState({});
+  const [isItemFormVisible, setIsItemFormVisible] = useState(false); // For Add Item form
+  const [isCreateListFormVisible, setIsCreateListFormVisible] = useState(false); // For Create List form
   const [error, setError] = useState(null);
   const [currentItem, setCurrentItem] = useState(null);
   const [shoppingListName, setShoppingListName] = useState('');
   const [shoppingListId, setShoppingListId] = useState(null); 
   const navigate = useNavigate();
 
-
   useEffect(() => {
     fetchShoppingLists();
-}, []);
-
+  }, []);
 
   useEffect(() => {
-if (shoppingListId) {
-    axios.get(`http://localhost:8080/api/items`)
-      .then(response => setItems(response.data))
+    if (shoppingListId) {
+      axios.get(`http://localhost:8080/api/shoppinglistitems/list/${shoppingListId}`)
+        .then(response => {
+          setItemsPerList(prevItems => ({
+            ...prevItems,
+            [shoppingListId]: response.data
+          }));
+        })
+        .catch(error => {
+          console.error('Error fetching items:', error);
+          setError('Error fetching items');
+        });
+    }
+  }, [shoppingListId]);
+
+  // Fetch all shopping lists
+  const fetchShoppingLists = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/shoppinglists');
+      setShoppingLists(Array.isArray(response.data) ? response.data : []);
+      console.log('Fetched Shopping Lists:', response.data);
+    } catch (error) {
+      console.error('Error fetching shopping lists', error);
+      setShoppingLists([]);
+    }
+  };
+
+  // Handle selecting a shopping list
+  const handleSelectList = (listId) => {
+    setSelectedList(listId);
+    axios.get(`http://localhost:8080/api/shoppinglistitems/list/${listId}`)
+      .then(response => setItemsPerList(prevItems => ({
+        ...prevItems,
+        [listId]: response.data
+      })))
       .catch(error => {
         console.error('Error fetching items:', error);
         setError('Error fetching items');
       });
+  };
+
+  // Handle adding an item to the selected list
+  const handleAddItemToSelectedList = (item) => {
+    if (!selectedList) {
+      setError('No shopping list selected');
+      return;
     }
-  }, [shoppingListId]);
 
-
-    
-
-  const handleAddItem = (item) => {
-    axios.post('http://localhost:8080/api/items', item)
-      .then(response => setItems([...items, response.data]))
+    axios.post(`http://localhost:8080/api/shoppinglistitems/${selectedList}/items`, item)
+      .then(response => {
+        setItemsPerList(prevItems => ({
+          ...prevItems,
+          [selectedList]: [...(prevItems[selectedList] || []), response.data]
+        }));
+      })
       .catch(error => {
         console.error('Error adding item:', error);
         setError('Error adding item');
       });
   };
 
+  // Handle updating an item in the selected list
   const handleUpdateItem = (id, updatedItem) => {
-    axios.put(`http://localhost:8080/api/items/${id}`, updatedItem)
-    .then(response => {
-      setItems(items.map(item => item.id === id ? response.data : item));
-      setCurrentItem(null);
-    })
-    .catch(error => {
-      console.error('Error updating item:', error);
-      setError('Error updating item');
-    });
+    axios.put(`http://localhost:8080/api/shoppinglistitems/list/${selectedList}/items/${id}`, updatedItem)
+      .then(response => {
+        setItemsPerList(prevItems => ({
+          ...prevItems,
+          [selectedList]: prevItems[selectedList].map(item => item.id === id ? response.data : item)
+        }));
+        setCurrentItem(null);
+      })
+      .catch(error => {
+        console.error('Error updating item:', error);
+        setError('Error updating item');
+      });
   };
 
+  // Handle removing items from the selected list
   const handleRemoveItems = (selectedIndices) => {
-    const idsToDelete = selectedIndices.map(index => items[index].id);
-    const deleteRequests = idsToDelete.map(id => axios.delete(`http://localhost:8080/api/items/${id}`));
+    const idsToDelete = selectedIndices.map(index => itemsPerList[selectedList][index].id);
+    const deleteRequests = idsToDelete.map(id => axios.delete(`http://localhost:8080/api/shoppinglistitems/list/${selectedList}/items/${id}`));
 
     axios.all(deleteRequests)
       .then(axios.spread(() => {
-        setItems(items.filter((_, index) => !selectedIndices.includes(index)));
+        setItemsPerList(prevItems => ({
+          ...prevItems,
+          [selectedList]: prevItems[selectedList].filter((_, index) => !selectedIndices.includes(index))
+        }));
       }))
       .catch(error => {
         console.error('Error deleting items:', error);
@@ -77,107 +122,66 @@ if (shoppingListId) {
       });
   };
 
-  const toggleFormVisibility = () => {
-    setIsFormVisible(!isFormVisible);
-  };
-
-  const handleEditItem = (item) => {
-    setCurrentItem(item);
-    setIsFormVisible(true);
-  };
-
-  //create shoppinglist
+  // Handle creating a new shopping list
   const handleCreateShoppingList = () => {
-    const shoppinglist = {listName: shoppingListName};
+    const shoppinglist = { listName: shoppingListName };
     axios.post('http://localhost:8080/api/shoppinglists', shoppinglist)
-    .then(response => {
-      setShoppingLists([...shoppingLists, response.data]);
-        setShoppingListId(response.data.id);
+      .then(response => {
+        setShoppingLists([...shoppingLists, response.data]);
+        setShoppingListId(response.data.shoppingListId);
         setShoppingListName('');
-        setIsFormVisible(false);
-    })
-    .catch(error => {
-        console.error('Error creating shopping lists:', error);
+        setIsCreateListFormVisible(false);
+      })
+      .catch(error => {
+        console.error('Error creating shopping list:', error);
         setError('Error creating shopping list');
-    });
+      });
   };
 
- // Fetch all shopping lists
- const fetchShoppingLists = async () => {
-  try {
-      const response = await axios.get('http://localhost:8080/api/shoppinglists');
-      setShoppingLists(Array.isArray(response.data) ? response.data : []);
-      console.log('Fetched Shopping Lists:', response.data);
-  } catch (error) {
-      console.error('Error fetching shopping lists', error);
-      setShoppingLists([]);
-  }
-};
+  // Toggle item form visibility
+  const toggleItemFormVisibility = () => {
+    setIsItemFormVisible(!isItemFormVisible);
+  };
 
-
-
-const selectList = (list) => {
-setSelectedList(list);
-fetchItemsForSelectedList(list.shoppingListId); 
-};
-
-const fetchItemsForSelectedList = async (listId) => {
-try {
-  const response = await axios.get(`http://localhost:8080/api/shoppinglists/${listId}/items`);
-  setItems(response.data);
-} catch (error) {
-  console.error('Error fetching items:', error);
-  setError('Error fetching items');
-}
-};
-
-const handleToggleList = (listId) => {
-if (shoppingListId === listId) {
-  setShoppingListId(null); // Close the current list
-} else {
-  setShoppingListId(listId); // Open the new list
-  fetchItemsForSelectedList(listId);
-}
-};
-
-
+  // Toggle create list form visibility
+  const toggleCreateListFormVisibility = () => {
+    setIsCreateListFormVisible(!isCreateListFormVisible);
+  };
 
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h1>Shopping List</h1>
-        {!isFormVisible && (
-             <button
-             className="btn btn-primary"
-             onClick={() => setIsFormVisible(true)}
-           >
-             Create New Shopping List
-           </button>
-         )}
+        {!isCreateListFormVisible && (
+          <button
+            className="btn btn-primary"
+            onClick={toggleCreateListFormVisibility}
+          >
+            Create New Shopping List
+          </button>
+        )}
 
-         {isFormVisible && (
-            <div className="d-flex">
-                <input type="text"
-                className="form-control me-2"
-                value={shoppingListName}
-                onChange={(e) => setShoppingListName(e.target.value)}
-                placeholder='Enter shopping list name'/>
-
-                <button className='btn btn-success'
-                onClick={handleCreateShoppingList}>Create</button>
-                </div>
-         )}
-       
-        <button
-          className="btn btn-secondary"
-          onClick={toggleFormVisibility}
-        >
-          {isFormVisible ? 'Hide Add Item Form' : 'Add New Item'}
-        </button>
+        {isCreateListFormVisible && (
+          <div className="d-flex">
+            <input
+              type="text"
+              className="form-control me-2"
+              value={shoppingListName}
+              onChange={(e) => setShoppingListName(e.target.value)}
+              placeholder='Enter shopping list name'
+            />
+            <button
+              className='btn btn-success'
+              onClick={handleCreateShoppingList}
+            >
+              Create
+            </button>
+          </div>
+        )}
       </div>
 
- {/* display shopping list names below header */}
- {shoppingLists.length > 0 ? (
+      {/* Display shopping list names below header */}
+      {shoppingLists.length > 0 ? (
         <div id="accordion">
           {shoppingLists.map((list, index) => (
             <div className="card" key={list.shoppingListId}>
@@ -189,7 +193,7 @@ if (shoppingListId === listId) {
                     data-target={`#collapse${index}`}
                     aria-expanded="true"
                     aria-controls={`collapse${index}`}
-                    onClick={() => handleToggleList(list.shoppingListId)}
+                    onClick={() => handleSelectList(list.shoppingListId)}
                   >
                     {list.listName}
                   </button>
@@ -198,16 +202,22 @@ if (shoppingListId === listId) {
 
               <div
                 id={`collapse${index}`}
-                className={`collapse ${shoppingListId === list.shoppingListId ? 'show' : ''}`}
+                className={`collapse ${selectedList === list.shoppingListId ? 'show' : ''}`}
                 aria-labelledby={`heading${index}`}
                 data-parent="#accordion"
               >
                 <div className="card-body">
                   <ItemList
-                    items={items}
+                    items={itemsPerList[selectedList] || []}
                     onRemoveItems={handleRemoveItems}
-                    onEditItem={handleEditItem}
+                    onEditItem={setCurrentItem}
                   />
+                  <button
+                    className="btn btn-secondary mt-3"
+                    onClick={toggleItemFormVisibility}
+                  >
+                    {isItemFormVisible ? 'Hide Add Item Form' : 'Add New Item'}
+                  </button>
                 </div>
               </div>
             </div>
@@ -217,28 +227,23 @@ if (shoppingListId === listId) {
         <p>No shopping lists available</p>
       )}
 
-      {isFormVisible &&
+      {/* Add Item Form */}
+      {isItemFormVisible && (
         <div className="mb-4">
           <ItemForm 
-            onAddItem={handleAddItem}
-            onUpdateItem={() => {}}
+            onAddItem={handleAddItemToSelectedList}
             currentItem={currentItem}
+            onUpdateItem={handleUpdateItem}
           />
         </div>
-      }
+      )}
 
-      <div>
-        {error && (
-          <div className="alert alert-danger">
-            {error}
-          </div>
-        )}
-        <ItemList 
-          items={items} 
-          onRemoveItems={handleRemoveItems}
-          onEditItem={handleEditItem} 
-        />
-      </div>
+      {/* Error Handling */}
+      {error && (
+        <div className="alert alert-danger">
+          {error}
+        </div>
+      )}
     </div>
   );
 }
