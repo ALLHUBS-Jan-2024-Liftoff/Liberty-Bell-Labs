@@ -1,78 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import '../RecipePage.css'; // Import the CSS file
+import WinePairing from '../components/WinePairing';
 
 function removeHTMLTags(str) {
   return str.replace(/<\/?[^>]+(>|$)/g, "");
-}
-
-const styles = {
-  card: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    overflow: 'hidden', // Ensure content does not overflow
-  },
-  imageContainer: {
-    height: '200px',
-    overflow: 'hidden',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-  },
-  cardBody: {
-    flexGrow: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    padding: '15px', // Add padding for consistency
-  },
-  title: {
-    fontSize: '1.25rem',
-    marginBottom: '10px',
-  },
-  summary: {
-    flexGrow: 1,
-    marginBottom: '10px',
-    color: '#333',
-    overflow: 'hidden', // Hide overflow
-  },
-  showMoreButton: {
-    color: '#007bff',
-    cursor: 'pointer',
-    fontWeight: 'bold',
-    marginTop: '10px',
-  },
-  divider: {
-    height: '1px',
-    backgroundColor: '#ddd',
-    margin: '10px 0',
-  },
-  meta: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr', // Adjusted columns
-    gap: '10px',
-    marginBottom: '10px',
-  },
-  metaItem: {
-    fontSize: '0.9rem',
-    color: '#555',
-  },
-  metaTitle: {
-    fontWeight: 'bold',
-    marginRight: '5px',
-  },
-  buttonContainer: {
-    marginTop: 'auto',
-  },
-};
-
-function Meta({ title, description }) {
-  return (
-    <div style={styles.metaItem}>
-      <span style={styles.metaTitle}>{title}:</span> {description || 'N/A'}
-    </div>
-  );
 }
 
 function truncateSummary(text, length = 100) {
@@ -80,10 +13,30 @@ function truncateSummary(text, length = 100) {
   return text.substring(0, length) + '...';
 }
 
+function Meta({ title, description }) {
+  return (
+    <div className="metaItem">
+      <span className="metaTitle">{title}:</span> {description || 'N/A'}
+    </div>
+  );
+}
+
 function RecipePage() {
   const location = useLocation();
   const { recipes } = location.state || { recipes: [] };
   const [showFullSummary, setShowFullSummary] = useState({});
+  const [userIngredients, setUserIngredients] = useState([]);
+
+  useEffect(() => {
+    // Fetch user ingredients from the Spring Boot controller
+    axios.get('http://localhost:8080/api/items')
+      .then(response => {
+        setUserIngredients(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching user ingredients:', error);
+      });
+  }, []);
 
   const handleShowMore = (id) => {
     setShowFullSummary((prev) => ({
@@ -92,39 +45,81 @@ function RecipePage() {
     }));
   };
 
+  const countMatchingIngredients = (recipeIngredients) => {
+    return recipeIngredients.filter(ingredient =>
+      userIngredients.some(userIngredient => {
+        if (typeof userIngredient.name === 'string') {
+          return ingredient.nameClean.toLowerCase().includes(userIngredient.name.toLowerCase());
+        }
+        console.warn('userIngredient.name is not a string:', userIngredient);
+        return false;
+      })
+    ).length;
+  };
+
+  const sortedRecipes = [...recipes].sort((a, b) =>
+    countMatchingIngredients(b.extendedIngredients) - countMatchingIngredients(a.extendedIngredients)
+  );
+
+  const formatIngredients = (ingredients) => {
+    return ingredients.map(ingredient => {
+      const isMatching = userIngredients.some(userIngredient => {
+        if (typeof userIngredient.name === 'string') {
+          return ingredient.nameClean.toLowerCase().includes(userIngredient.name.toLowerCase());
+        }
+        console.warn('userIngredient.name is not a string:', userIngredient);
+        return false;
+      });
+      return (
+        <span
+          key={ingredient.id}
+          className={isMatching ? 'matchingIngredient' : 'unmatchingIngredient'}
+        >
+          {ingredient.nameClean}
+        </span>
+      );
+    }).reduce((prev, curr) => [prev, ', ', curr]);
+  };
+
   return (
     <div className="container">
       <h1>Recipe Recommendations</h1>
       <div className="row">
-        {recipes.length > 0 ? (
-          recipes.map((recipe) => {
+        {sortedRecipes.length > 0 ? (
+          sortedRecipes.map((recipe) => {
             const summaryText = removeHTMLTags(recipe.summary);
             const isFullSummaryShown = showFullSummary[recipe.id];
+            const matchingCount = countMatchingIngredients(recipe.extendedIngredients);
 
             return (
               <div key={recipe.id} className="col-md-4">
-                <div className="card mb-4" style={styles.card}>
-                  <div style={styles.imageContainer}>
+                <div className="card mb-4">
+                  <div className="imageContainer">
                     <img
                       src={recipe.image || 'default-image-url'}
-                      style={styles.image}
+                      className="image"
                       alt={recipe.title || 'No Title'}
                     />
                   </div>
-                  <div className="card-body" style={styles.cardBody}>
-                    <h5 className="card-title" style={styles.title}>
+                  <div className="cardBody">
+                    <h5 className="card-title title">
                       {recipe.title || 'No Title'}
                     </h5>
 
+                    {/* Ingredients */}
+                    <div className="ingredients">
+                      <strong>Ingredients:</strong> {formatIngredients(recipe.extendedIngredients)}
+                    </div>
+
                     {/* Summary with Show More/Less */}
-                    <div style={styles.summary}>
+                    <div className="summary">
                       {isFullSummaryShown
                         ? summaryText
                         : truncateSummary(summaryText, 100)}
                     </div>
                     {summaryText.length > 100 && (
                       <div
-                        style={styles.showMoreButton}
+                        className="showMoreButton"
                         onClick={() => handleShowMore(recipe.id)}
                       >
                         {isFullSummaryShown ? 'Show Less' : 'Show More'}
@@ -132,10 +127,16 @@ function RecipePage() {
                     )}
 
                     {/* Divider */}
-                    <div style={styles.divider} />
+                    <div className="winePairingContainer">
+                      <WinePairing
+                        recipeTitle={recipe.title}
+                        ingredients={recipe.extendedIngredients.map(ingredient => ingredient.nameClean)}
+                      />
+                    </div>
+                    <div className="divider" />
 
                     {/* Meta Information */}
-                    <div style={styles.meta}>
+                    <div className="meta">
                       <Meta title="Course" description={recipe.dishTypes?.join('/')} />
                       <Meta title="Ready in" description={`${recipe.readyInMinutes} minutes`} />
                       <Meta title="Cuisine" description={recipe.cuisines?.join('/')} />
@@ -143,7 +144,7 @@ function RecipePage() {
                     </div>
 
                     {/* Button container for consistency */}
-                    <div style={styles.buttonContainer}>
+                    <div className="buttonContainer">
                       {recipe.sourceUrl ? (
                         <a
                           href={recipe.sourceUrl}
@@ -156,6 +157,11 @@ function RecipePage() {
                       ) : (
                         <p className="card-text">Source URL not available</p>
                       )}
+                    </div>
+
+                    {/* Matching Ingredients Count */}
+                    <div className="matchingCount">
+                      {matchingCount} matching ingredients
                     </div>
                   </div>
                 </div>
