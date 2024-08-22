@@ -15,16 +15,18 @@ function ShoppingListItemForm({ onAddItem, onUpdateItem, currentItem }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const item = { itemName, quantity, unit };
+        const newItem = { itemName, quantity, unit };
 
+        // onSubmit(newItem)
+////////////////
         if (currentItem) {
             // If there's a current item, update it
-            onUpdateItem(currentItem.id, item);
+            onUpdateItem(currentItem.shoppingListItemId, newItem);
         } else {
             // Else, add a new item
-            onAddItem(item);
+            onAddItem(newItem);
         }
-
+/////////////////
         // Clear form after submission
         setItemName('');
         setQuantity('');
@@ -32,29 +34,53 @@ function ShoppingListItemForm({ onAddItem, onUpdateItem, currentItem }) {
     };
 
     return (
+        <div className="container">
         <form onSubmit={handleSubmit}>
+            <div className="form-row">
+                <div className="form-group col-md-4">
+                    <label>Item Name</label>
             <input
                 type="text"
-                placeholder="Item Name"
+                // placeholder="Item Name"
                 value={itemName}
                 onChange={(e) => setItemName(e.target.value)}
+                className="form-control"
+                maxLength="100"
+                placeholder="Enter Item Name"
                 required
             />
+            </div>
+
+            <div className="form-group col-md-4">
+                <label>Quantity</label>
             <input
                 type="number"
                 placeholder="Quantity"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
+                className="form-control"
                 required
             />
-            <input
-                type="text"
-                placeholder="Unit"
+            </div>
+            <div className="form-group col-md-4">
+                <label>Unit</label>
+                <select
+                // type="number"
+                // placeholder="Unit"
                 value={unit}
                 onChange={(e) => setUnit(e.target.value)}
-            />
-            <button type="submit">{currentItem ? 'Update Item' : 'Add Item'}</button>        
+                className="form-control">
+            
+            <option value="pounds">lbs</option>
+            <option value="each">each</option>
+            </select>
+            </div>
+            </div>
+            
+            {/* <button type="submit">{currentItem ? 'Update Item' : 'Add Item'}</button>         */}
+            <button type="submit" className="btn btn-primary">Add to List</button>
         </form>
+        </div>
     );
 }
 

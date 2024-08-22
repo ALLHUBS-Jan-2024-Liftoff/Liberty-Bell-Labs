@@ -7,6 +7,7 @@ function ShoppingListPage() {
 const [shoppingLists, setShoppingLists] = useState([]);
 const [selectedList, setSelectedList] = useState(null);
 const [editingList, setEditingList] = useState(null);
+const [items, setItems] = useState([]);
 const [editingItem, setEditingItem] = useState(null);
 const [error, setError] = useState(null);
 
@@ -22,6 +23,10 @@ axios.get('http://localhost:8080/api/shoppinglists')
 });
 
 }, []);
+
+const handleAddItem = (newItem) => {
+  setItems([...items, newItem]);
+};
 
 //select list when a user clicks on one
 const handleSelectList = (list) => {
@@ -65,6 +70,9 @@ const handleUpdateList = (shoppingListId, listData) => {
     });
 };
 
+//items
+
+
 
 
 
@@ -74,9 +82,6 @@ const handleUpdateList = (shoppingListId, listData) => {
 <h1>Shopping Lists</h1>
 {/* Shopping List form */}
 
-{/* <ShoppingListForm currentList={editingList}
-onSave={editingList ? handleUpdateList : handleAddList}
-/> */}
 <ShoppingListForm
                 shoppingList={editingList}
                 onCreateList={handleAddList}
@@ -100,7 +105,16 @@ onSave={editingList ? handleUpdateList : handleAddList}
     {error}
     </div>
 )}
-
+{/* shopping lists item form */}
+<ShoppingListItemForm onAddItem={handleAddItem}/>
+{/* display items */}
+<ul>
+  {items.map((item, index) => (
+    <li key={index}>
+      {item.itemName} - {item.quantity} {item.unit}
+    </li>
+  ))}
+</ul>
 
     </div>
   )
