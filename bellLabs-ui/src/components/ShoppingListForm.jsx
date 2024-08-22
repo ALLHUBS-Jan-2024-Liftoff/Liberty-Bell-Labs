@@ -33,10 +33,13 @@ import ShoppingListItemForm from './ShoppingListItemForm';
         type="text"
         placeholder="Shopping List Name"
         value={listName}
-        onChange={(e) => setListName(e.target.value)}/>
-        <button type="submit" className="btn btn-primary">New List</button>
+        onChange={(e) => setListName(e.target.value)} required/>
+        {/* <button type="submit" className="btn btn-primary">New List</button> */}
+        <button type="submit" className="btn btn-primary">
+                {shoppingList ? 'Update List' : 'New List'}
+            </button>
         </form>
-  )
+  );
 }
 
 export default ShoppingListForm;

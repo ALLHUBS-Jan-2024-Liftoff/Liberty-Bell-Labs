@@ -17,8 +17,7 @@ function ShoppingListItemForm({ onAddItem, onUpdateItem, currentItem }) {
         e.preventDefault();
         const newItem = { itemName, quantity, unit };
 
-        // onSubmit(newItem)
-////////////////
+        
         if (currentItem) {
             // If there's a current item, update it
             onUpdateItem(currentItem.shoppingListItemId, newItem);
@@ -77,8 +76,8 @@ function ShoppingListItemForm({ onAddItem, onUpdateItem, currentItem }) {
             </div>
             </div>
             
-            {/* <button type="submit">{currentItem ? 'Update Item' : 'Add Item'}</button>         */}
-            <button type="submit" className="btn btn-primary">Add to List</button>
+            <button type="submit" className="btn btn-primary">{currentItem ? 'Update Item' : 'Add Item'}</button>        
+            {/* <button type="submit" className="btn btn-primary">Add to List</button> */}
         </form>
         </div>
     );
