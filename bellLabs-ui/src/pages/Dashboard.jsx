@@ -11,8 +11,18 @@ function Dashboard() {
   const [error, setError] = useState(null);
   const [currentItem, setCurrentItem] = useState(null); // State for item being updated
   const navigate = useNavigate(); // Initialize navigate function
+  const [expiringItems, setExpiringItems] = useState([]);
 
   useEffect(() => {
+    //fetch expiring items//
+axios.get('http://localhost:8080/api/expiring-soon')
+.then(response => setExpiringItems(response.data))
+.catch(error => {
+  console.error('Error fetching expiring items', error);
+  setError('Error fetching expiring items');
+});
+    //
+
     axios.get('http://localhost:8080/api/items')
       .then(response => setItems(response.data))
       .catch(error => {
@@ -84,6 +94,18 @@ function Dashboard() {
         </p>
       </div>
 
+      {/* Alert for expiring items */}
+      {expiringItems.length > 0 && (
+        <div className="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Warning </strong> You have items that are about to expire: <ul>
+
+            {expiringItems.map(item => (<li key={item.id}>{item.name} - Expires on {new Date(item.expirationDate).toLocaleDateString()}</li>
+            ))}
+          </ul>
+          <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+      )}
+{/* // */}
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2>Item Management</h2>
         <div>

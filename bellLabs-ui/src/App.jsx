@@ -8,8 +8,9 @@ import Register from "./pages/Register";
 import Logout from "./pages/Logout";
 import NavBar from './components/NavBar';
 import Dashboard from './pages/Dashboard';
+import ShoppingListPage from './pages/ShoppingListPage';
 import SearchRecipe from './services/SearchRecipe';
-import ShoppingList from './pages/ShoppingList';
+
 import "./App.css";
 import Home from "./pages/Home";
 import About from './pages/About'; // Import LearnMore component
@@ -50,7 +51,7 @@ function App() {
             } />
             <Route path="/shoppinglists" element={
               <ProtectedRoute authenticated={authenticated}>
-                <ShoppingList />
+                <ShoppingListPage/>
               </ProtectedRoute>
             } />
              <Route path="/recipes" element={
