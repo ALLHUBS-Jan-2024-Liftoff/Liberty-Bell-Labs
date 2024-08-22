@@ -23,8 +23,8 @@ public class ShoppingList {
 
     private int mealPlanId;
 
-//    @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<ShoppingListItem> items = new ArrayList<>();
+    @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ShoppingListItem> items = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "shoppingList")
 //    private List<GroceryItem> groceryItems;
@@ -80,12 +80,11 @@ public class ShoppingList {
         this.mealPlanId = mealPlanId;
     }
 
-//    public List<ShoppingListItem> getItems() {
-//        return items;
-//    }
-//
-//    public void setItems(List<ShoppingListItem> items) {
-//        this.items = items;
-//    }
+    public List<ShoppingListItem> getItems() {
+        return items;
+    }
 
+    public void setItems(List<ShoppingListItem> items) {
+        this.items = items;
+    }
 }

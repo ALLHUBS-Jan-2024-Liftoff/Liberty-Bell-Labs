@@ -31,6 +31,12 @@ public class ShoppingListController {
         return shoppingListRepository.findAll();
     }
 
+    public ResponseEntity<ShoppingList> getShoppingListById(@PathVariable int shoppingListId) {
+        Optional<ShoppingList> shoppingList = shoppingListRepository.findById(shoppingListId);
+        return shoppingList.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<ShoppingList> createShoppingList(@RequestBody ShoppingList shoppingList) {
         try {

@@ -1,5 +1,6 @@
 package com.bellLabs.bellLabs_api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -21,12 +22,17 @@ public class ShoppingListItem {
 
     @ManyToOne
     @JoinColumn(name = "shopping_list_id")
+    @JsonIgnore
     private ShoppingList shoppingList;
+
 
     public ShoppingListItem(String itemName, int quantity, String unit) {
         this.itemName = itemName;
         this.quantity = quantity;
         this.unit = unit;
+    }
+
+    public ShoppingListItem() {
     }
 
     //Getters & Setters
@@ -70,4 +76,6 @@ public class ShoppingListItem {
     public void setUnit(String unit) {
         this.unit = unit;
     }
+
+
 }
