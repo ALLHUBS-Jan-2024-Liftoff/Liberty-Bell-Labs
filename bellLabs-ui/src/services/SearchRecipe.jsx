@@ -17,7 +17,7 @@ const SearchRecipe = () => {
                     query: query, //
                     apiKey: import.meta.env.VITE_SPOONACULAR_API_KEY , // API key
                 },
-            });
+            }); 
             setRecipes(response.data.results);
         } catch (error) {
             console.error("Error feathing recipes", error);

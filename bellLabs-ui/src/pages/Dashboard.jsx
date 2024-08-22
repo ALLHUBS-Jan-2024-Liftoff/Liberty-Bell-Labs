@@ -65,6 +65,11 @@ function Dashboard() {
     setIsFormVisible(true);
   };
 
+  const goToRecipeRecommendations = (selectedItems) => {
+    // Navigate to the recipe page with the selected items as ingredients
+    navigate('/recipes', { state: { ingredients: selectedItems.map(index => items[index].name) } });
+  };
+
   const goToShoppingList = () => {
     navigate('/shoppinglists');
   };
@@ -116,7 +121,8 @@ function Dashboard() {
             <ItemList 
               items={items} 
               onRemoveItems={handleRemoveItems}
-              onEditItem={handleEditItem} 
+              onEditItem={handleEditItem}
+              onGetRecipes={goToRecipeRecommendations} // Pass the new handler 
             />
           </div>
         </div>

@@ -80,6 +80,7 @@ import ShoppingList from './pages/ShoppingList';
 import "./App.css";
 import Home from "./pages/Home";
 import About from './pages/About'; // Import LearnMore component
+import RecipePage from "./pages/RecipePage";
 
 function ProtectedRoute({ authenticated, children }) {
   return authenticated ? children : <Navigate to="/login" replace />;
@@ -117,6 +118,11 @@ function App() {
             <Route path="/shoppinglists" element={
               <ProtectedRoute authenticated={authenticated}>
                 <ShoppingList />
+              </ProtectedRoute>
+            } />
+             <Route path="/recipes" element={
+              <ProtectedRoute authenticated={authenticated}>
+                <RecipePage />
               </ProtectedRoute>
             } />
             <Route path="/logout" element={

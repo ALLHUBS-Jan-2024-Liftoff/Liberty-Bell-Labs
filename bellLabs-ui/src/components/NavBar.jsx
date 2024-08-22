@@ -31,6 +31,9 @@ function NavBar({ authenticated }) {
                 <li className="nav-item">
                   <Link className="nav-link" to="/shoppinglists">Shopping List</Link>
                 </li>
+                {/* <li className="nav-item">
+                  <Link className="nav-link" to="/recipes">Recipe Page</Link>
+                </li> */}
               </>
             ) : (
               <></>
