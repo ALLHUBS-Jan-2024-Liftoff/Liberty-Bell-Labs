@@ -1,76 +1,15 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import '../RecipePage.css'; // Import the CSS file
 
 function removeHTMLTags(str) {
   return str.replace(/<\/?[^>]+(>|$)/g, "");
 }
 
-const styles = {
-  card: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    overflow: 'hidden', // Ensure content does not overflow
-  },
-  imageContainer: {
-    height: '200px',
-    overflow: 'hidden',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-  },
-  cardBody: {
-    flexGrow: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    padding: '15px', // Add padding for consistency
-  },
-  title: {
-    fontSize: '1.25rem',
-    marginBottom: '10px',
-  },
-  summary: {
-    flexGrow: 1,
-    marginBottom: '10px',
-    color: '#333',
-    overflow: 'hidden', // Hide overflow
-  },
-  showMoreButton: {
-    color: '#007bff',
-    cursor: 'pointer',
-    fontWeight: 'bold',
-    marginTop: '10px',
-  },
-  divider: {
-    height: '1px',
-    backgroundColor: '#ddd',
-    margin: '10px 0',
-  },
-  meta: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr', // Adjusted columns
-    gap: '10px',
-    marginBottom: '10px',
-  },
-  metaItem: {
-    fontSize: '0.9rem',
-    color: '#555',
-  },
-  metaTitle: {
-    fontWeight: 'bold',
-    marginRight: '5px',
-  },
-  buttonContainer: {
-    marginTop: 'auto',
-  },
-};
-
 function Meta({ title, description }) {
   return (
-    <div style={styles.metaItem}>
-      <span style={styles.metaTitle}>{title}:</span> {description || 'N/A'}
+    <div className="metaItem">
+      <span className="metaTitle">{title}:</span> {description || 'N/A'}
     </div>
   );
 }
@@ -103,28 +42,28 @@ function RecipePage() {
 
             return (
               <div key={recipe.id} className="col-md-4">
-                <div className="card mb-4" style={styles.card}>
-                  <div style={styles.imageContainer}>
+                <div className="card mb-4">
+                  <div className="imageContainer">
                     <img
                       src={recipe.image || 'default-image-url'}
-                      style={styles.image}
+                      className="image"
                       alt={recipe.title || 'No Title'}
                     />
                   </div>
-                  <div className="card-body" style={styles.cardBody}>
-                    <h5 className="card-title" style={styles.title}>
+                  <div className="cardBody">
+                    <h5 className="card-title title">
                       {recipe.title || 'No Title'}
                     </h5>
 
                     {/* Summary with Show More/Less */}
-                    <div style={styles.summary}>
+                    <div className="summary">
                       {isFullSummaryShown
                         ? summaryText
                         : truncateSummary(summaryText, 100)}
                     </div>
                     {summaryText.length > 100 && (
                       <div
-                        style={styles.showMoreButton}
+                        className="showMoreButton"
                         onClick={() => handleShowMore(recipe.id)}
                       >
                         {isFullSummaryShown ? 'Show Less' : 'Show More'}
@@ -132,10 +71,10 @@ function RecipePage() {
                     )}
 
                     {/* Divider */}
-                    <div style={styles.divider} />
+                    <div className="divider" />
 
                     {/* Meta Information */}
-                    <div style={styles.meta}>
+                    <div className="meta">
                       <Meta title="Course" description={recipe.dishTypes?.join('/')} />
                       <Meta title="Ready in" description={`${recipe.readyInMinutes} minutes`} />
                       <Meta title="Cuisine" description={recipe.cuisines?.join('/')} />
@@ -143,7 +82,7 @@ function RecipePage() {
                     </div>
 
                     {/* Button container for consistency */}
-                    <div style={styles.buttonContainer}>
+                    <div className="buttonContainer">
                       {recipe.sourceUrl ? (
                         <a
                           href={recipe.sourceUrl}
