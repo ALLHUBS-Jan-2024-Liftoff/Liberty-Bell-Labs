@@ -1,9 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 import '../RecipePage.css'; // Import the CSS file
 
 function removeHTMLTags(str) {
   return str.replace(/<\/?[^>]+(>|$)/g, "");
+}
+
+function truncateSummary(text, length = 100) {
+  if (text.length <= length) return text;
+  return text.substring(0, length) + '...';
 }
 
 function Meta({ title, description }) {
@@ -14,15 +20,22 @@ function Meta({ title, description }) {
   );
 }
 
-function truncateSummary(text, length = 100) {
-  if (text.length <= length) return text;
-  return text.substring(0, length) + '...';
-}
-
 function RecipePage() {
   const location = useLocation();
   const { recipes } = location.state || { recipes: [] };
   const [showFullSummary, setShowFullSummary] = useState({});
+  const [userIngredients, setUserIngredients] = useState([]);
+
+  useEffect(() => {
+    // Fetch user ingredients from the Spring Boot controller
+    axios.get('http://localhost:8080/api/items')
+      .then(response => {
+        setUserIngredients(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching user ingredients:', error);
+      });
+  }, []);
 
   const handleShowMore = (id) => {
     setShowFullSummary((prev) => ({
@@ -31,14 +44,39 @@ function RecipePage() {
     }));
   };
 
+  const countMatchingIngredients = (recipeIngredients) => {
+    return recipeIngredients.filter(ingredient => 
+      userIngredients.includes(ingredient.nameClean)
+    ).length;
+  };
+
+  const sortedRecipes = [...recipes].sort((a, b) => 
+    countMatchingIngredients(b.extendedIngredients) - countMatchingIngredients(a.extendedIngredients)
+  );
+
+  const formatIngredients = (ingredients) => {
+    return ingredients.map(ingredient => {
+      const isMatching = userIngredients.includes(ingredient.nameClean);
+      return (
+        <span
+          key={ingredient.id}
+          className={isMatching ? 'matchingIngredient' : 'unmatchingIngredient'}
+        >
+          {ingredient.nameClean}
+        </span>
+      );
+    });
+  };
+
   return (
     <div className="container">
       <h1>Recipe Recommendations</h1>
       <div className="row">
-        {recipes.length > 0 ? (
-          recipes.map((recipe) => {
+        {sortedRecipes.length > 0 ? (
+          sortedRecipes.map((recipe) => {
             const summaryText = removeHTMLTags(recipe.summary);
             const isFullSummaryShown = showFullSummary[recipe.id];
+            const matchingCount = countMatchingIngredients(recipe.extendedIngredients);
 
             return (
               <div key={recipe.id} className="col-md-4">
@@ -54,6 +92,11 @@ function RecipePage() {
                     <h5 className="card-title title">
                       {recipe.title || 'No Title'}
                     </h5>
+
+                    {/* Ingredients */}
+                    <div className="ingredients">
+                      <strong>Ingredients:</strong> {formatIngredients(recipe.extendedIngredients)}
+                    </div>
 
                     {/* Summary with Show More/Less */}
                     <div className="summary">
@@ -95,6 +138,11 @@ function RecipePage() {
                       ) : (
                         <p className="card-text">Source URL not available</p>
                       )}
+                    </div>
+
+                    {/* Matching Ingredients Count */}
+                    <div className="matchingCount">
+                      {matchingCount} matching ingredients
                     </div>
                   </div>
                 </div>
