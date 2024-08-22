@@ -91,4 +91,18 @@ public class GroceryItemController {
             return new ResponseEntity<>("Database connection failed.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    // test expiring alert
+    @GetMapping("/expiring-soon")
+    public ResponseEntity<List<GroceryItem>> getExpiringSoonGroceryItems(){
+        try {
+            LocalDate today = LocalDate.now();
+            LocalDate twoDaysFromNow = today.plusDays(2);
+            List<GroceryItem> expiringItems = groceryItemRepository.findByExpirationDateBetween(today, twoDaysFromNow);
+            return new ResponseEntity<>(expiringItems, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(List.of(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
