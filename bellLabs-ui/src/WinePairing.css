@@ -1,0 +1,22 @@
+.winePairingContainer {
+    margin-top: 10px; /* Add margin to separate from other content */
+    width: 100%; /* Make it full width */
+    font-size: 0.9rem; /* Adjust the font size */
+    background-color: rgba(255, 255, 255, 0.9); /* Add a semi-transparent background */
+    padding: 10px; /* Add padding for better spacing */
+    border-radius: 5px; /* Add rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  }
+  
+  .winePairingContainer img {
+    width: 100%; /* Make the image fit the container */
+  }
+  
+  .winePairingContainer h4 {
+    font-size: 1em; /* Adjust the heading size */
+  }
+  
+  .winePairingContainer p {
+    margin: 0;
+    font-size: 0.9em; /* Adjust the paragraph size */
+  }

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import '../RecipePage.css'; // Import the CSS file
+import WinePairing from '../components/WinePairing';
 
 function removeHTMLTags(str) {
   return str.replace(/<\/?[^>]+(>|$)/g, "");
@@ -126,6 +127,12 @@ function RecipePage() {
                     )}
 
                     {/* Divider */}
+                    <div className="winePairingContainer">
+                      <WinePairing
+                        recipeTitle={recipe.title}
+                        ingredients={recipe.extendedIngredients.map(ingredient => ingredient.nameClean)}
+                      />
+                    </div>
                     <div className="divider" />
 
                     {/* Meta Information */}
