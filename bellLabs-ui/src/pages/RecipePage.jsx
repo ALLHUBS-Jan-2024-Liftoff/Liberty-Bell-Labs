@@ -45,18 +45,30 @@ function RecipePage() {
   };
 
   const countMatchingIngredients = (recipeIngredients) => {
-    return recipeIngredients.filter(ingredient => 
-      userIngredients.includes(ingredient.nameClean)
+    return recipeIngredients.filter(ingredient =>
+      userIngredients.some(userIngredient => {
+        if (typeof userIngredient.name === 'string') {
+          return ingredient.nameClean.toLowerCase().includes(userIngredient.name.toLowerCase());
+        }
+        console.warn('userIngredient.name is not a string:', userIngredient);
+        return false;
+      })
     ).length;
   };
 
-  const sortedRecipes = [...recipes].sort((a, b) => 
+  const sortedRecipes = [...recipes].sort((a, b) =>
     countMatchingIngredients(b.extendedIngredients) - countMatchingIngredients(a.extendedIngredients)
   );
 
   const formatIngredients = (ingredients) => {
     return ingredients.map(ingredient => {
-      const isMatching = userIngredients.includes(ingredient.nameClean);
+      const isMatching = userIngredients.some(userIngredient => {
+        if (typeof userIngredient.name === 'string') {
+          return ingredient.nameClean.toLowerCase().includes(userIngredient.name.toLowerCase());
+        }
+        console.warn('userIngredient.name is not a string:', userIngredient);
+        return false;
+      });
       return (
         <span
           key={ingredient.id}
@@ -65,7 +77,7 @@ function RecipePage() {
           {ingredient.nameClean}
         </span>
       );
-    });
+    }).reduce((prev, curr) => [prev, ', ', curr]);
   };
 
   return (
