@@ -19,8 +19,8 @@ import java.util.Optional;
 public class ShoppingListController {
     @Autowired
     private ShoppingListRepository shoppingListRepository;
-    @Autowired
-    private GroceryItemRepository groceryItemRepository;
+//    @Autowired
+//    private GroceryItemRepository groceryItemRepository;
     @Autowired
     private ShoppingListItemRepository shoppingListItemRepository;
 
@@ -43,34 +43,30 @@ public class ShoppingListController {
 
     }
 
-    // find all GroceryItems with that ShoppingList
+    @PutMapping("{shoppingListId}")
+public ResponseEntity<ShoppingList> updateShoppingList(@PathVariable int shoppingListId, @RequestBody ShoppingList shoppingListDetails) {
+        Optional<ShoppingList> shoppingListOptional = shoppingListRepository.findById(shoppingListId);
 
-    @GetMapping("/shoppinglists/{shoppingListId}/items")
-    public ResponseEntity<List<GroceryItem>> getItemsForShoppingList(@PathVariable int shoppingListId) {
-        // find the ShoppingList by its ID
-        ShoppingList shoppingList = shoppingListRepository.findById((int) shoppingListId).orElse(null);
-
-        if (shoppingList == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        if(shoppingListOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
 
-        List<GroceryItem> items = groceryItemRepository.findByShoppingList(shoppingList);
-        return ResponseEntity.ok(items);
+        ShoppingList shoppingList = shoppingListOptional.get();
+        shoppingList.setListName(shoppingListDetails.getListName());
+
+        ShoppingList updatedShoppingList = shoppingListRepository.save(shoppingList);
+        return ResponseEntity.ok(updatedShoppingList);
+}
+
+    @DeleteMapping("/{shoppingListId}")
+    public ResponseEntity<Void> deleteShoppingList(@PathVariable int shoppingListId) {
+        shoppingListRepository.deleteById(shoppingListId);
+        return ResponseEntity.noContent().build();
     }
+
+
+
 
 }
 
 
-
-
-//@PostMapping("/items")
-//public ResponseEntity<GroceryItem> createGroceryItem(@RequestBody GroceryItem groceryItem) {
-//    try {
-//
-//        GroceryItem newGroceryItem = groceryItemRepository.save(new GroceryItem(groceryItem.getName(), groceryItem.getQuantity(), groceryItem.getUnit(), groceryItem.getExpirationDate()));
-//
-//        return new ResponseEntity<>(newGroceryItem, HttpStatus.CREATED);
-//    } catch (Exception e) {
-//        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
-//}

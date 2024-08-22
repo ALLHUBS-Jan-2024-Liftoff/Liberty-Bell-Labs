@@ -11,5 +11,5 @@ import java.util.List;
 public interface GroceryItemRepository extends JpaRepository<GroceryItem, Long> {
 
 
-    List<GroceryItem> findByShoppingList(ShoppingList shoppingList);
+//    List<GroceryItem> findByShoppingList(ShoppingList shoppingList);
 }

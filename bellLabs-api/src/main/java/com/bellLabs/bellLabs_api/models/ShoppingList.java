@@ -26,8 +26,8 @@ public class ShoppingList {
 //    @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<ShoppingListItem> items = new ArrayList<>();
 
-    @OneToMany(mappedBy = "shoppingList")
-    private List<GroceryItem> groceryItems;
+//    @OneToMany(mappedBy = "shoppingList")
+//    private List<GroceryItem> groceryItems;
 
     // Default constructor
     public ShoppingList() {
@@ -87,4 +87,5 @@ public class ShoppingList {
 //    public void setItems(List<ShoppingListItem> items) {
 //        this.items = items;
 //    }
+
 }

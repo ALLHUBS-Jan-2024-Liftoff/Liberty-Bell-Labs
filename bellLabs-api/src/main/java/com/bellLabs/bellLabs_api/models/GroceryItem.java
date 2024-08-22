@@ -25,9 +25,9 @@ public class GroceryItem {
     @Column(name = "expiration_date")
     private LocalDate expirationDate;
 
-    @ManyToOne
-    @JoinColumn(name = "shopping_list_id")
-    private ShoppingList shoppingList;
+//    @ManyToOne
+//    @JoinColumn(name = "shopping_list_id")
+//    private ShoppingList shoppingList;
 
     //no-argument constructor for JPA
     public GroceryItem() {
@@ -77,11 +77,11 @@ public class GroceryItem {
         this.expirationDate = expirationDate;
     }
 
-    public ShoppingList getShoppingList() {
-        return shoppingList;
-    }
-
-    public void setShoppingList(ShoppingList shoppingList) {
-        this.shoppingList = shoppingList;
-    }
+//    public ShoppingList getShoppingList() {
+//        return shoppingList;
+//    }
+//
+//    public void setShoppingList(ShoppingList shoppingList) {
+//        this.shoppingList = shoppingList;
+//    }
 }
